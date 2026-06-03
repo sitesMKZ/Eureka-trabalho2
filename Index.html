@@ -141,7 +141,7 @@
         .btn-green { background-color: var(--neon-green); box-shadow: 0 4px 15px rgba(74, 222, 128, 0.25); }
         .btn-green:hover { box-shadow: 0 8px 20px rgba(74, 222, 128, 0.4); }
 
-        /* Grid de Seleção de Personagem (Expandido) */
+        /* Grid de Seleção de Personagem */
         .char-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -451,7 +451,6 @@
     </div>
 
     <script>
-        // Set Governador as default to prevent "Freeze" bug
         let leaderClass = "governador";
         let energia = 0, dinheiro = 100, felicidade = 100, rodada = 1;
         let historicoCrises = { solar: false, eolica: false, hidro: false, biomassa: false, maremotriz: false };
@@ -494,13 +493,14 @@
         }
 
         function renderGameStats() {
-            document.getElementById('lbl-ene').innerText = energia + "%";
-            document.getElementById('lbl-din').innerText = dinheiro + " moedas";
-            document.getElementById('lbl-fel').innerText = felicidade + "%";
+            // Atualiza os valores em texto na tela (CORRIGIDO)
+            document.getElementById('v-ene').innerText = energia + "%";
+            document.getElementById('v-din').innerText = dinheiro + " moedas";
+            document.getElementById('v-fel').innerText = felicidade + "%";
             document.getElementById('hud-round').innerText = "Rodada: " + rodada;
 
+            // Atualiza o tamanho das barras visuais
             document.getElementById('f-ene').style.width = Math.min(energia, 100) + "%";
-            // Barras ajustadas dinamicamente para comportar líderes muito ricos ou muito felizes
             document.getElementById('f-din').style.width = Math.min(Math.max(dinheiro, 0), 150) / 1.5 + "%";
             document.getElementById('f-fel').style.width = Math.min(Math.max(felicidade, 0), 130) / 1.3 + "%";
 
