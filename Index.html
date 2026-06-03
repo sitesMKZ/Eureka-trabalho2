@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ecotopia Ultimate - Edição Expandida</title>
+    <style>
+        :root {
+            --bg-main: #0f172a; 
+            --panel-bg: #1e293b; 
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            
+            --neon-blue: #38bdf8;
+            --neon-green: #4ade80;
+            --neon-amber: #fbbf24;
+            --neon-red: #f87171;
+            --neon-purple: #c084fc;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 680px;
+            margin: auto;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Telas Animadas e Fluidas */
+        .screen {
+            display: none;
+            animation: slideUp 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Painéis Estilizados */
+        .card-box {
+            background: var(--panel-bg);
+            padding: 24px;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+        }
+
+        .eureka-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
+            color: white;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 13px;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(192, 132, 252, 0.3);
+        }
+
+        h1 {
+            font-size: 38px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--neon-green), var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        .group-tag {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            border-radius: 14px;
+            margin-top: 15px;
+            margin-bottom: 25px;
+        }
+        .group-tag p {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+        .group-tag span {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--neon-amber);
+        }
+
+        /* Botões Estilo Gamer Intuitivos */
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: 800;
+            color: #0f172a;
+            background-color: var(--neon-blue);
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.25);
+            margin-bottom: 12px;
+            user-select: none;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(56, 189, 248, 0.4);
+            filter: brightness(1.1);
+        }
+        .btn:active { transform: translateY(1px); }
+        
+        .btn-green { background-color: var(--neon-green); box-shadow: 0 4px 15px rgba(74, 222, 128, 0.25); }
+        .btn-green:hover { box-shadow: 0 8px 20px rgba(74, 222, 128, 0.4); }
+
+        /* Grid de Seleção de Personagem (Expandido) */
+        .char-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        @media(max-width: 500px) { .char-grid { grid-template-columns: 1fr; } }
+
+        .char-option {
+            background: rgba(255, 255, 255, 0.02);
+            border: 2px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+        .char-option:hover {
+            border-color: var(--neon-blue);
+            background: rgba(56, 189, 248, 0.04);
+        }
+        .char-option.selected {
+            border-color: var(--neon-green);
+            background: rgba(74, 222, 128, 0.08);
+            box-shadow: inset 0 0 15px rgba(74, 222, 128, 0.1);
+        }
+        .char-option h3 { font-size: 16px; color: var(--text-light); margin-bottom: 4px; }
+        .char-perks { font-size: 12px; font-weight: 700; color: var(--neon-purple); margin-bottom: 6px; }
+        .char-flavor { font-size: 12px; color: var(--text-muted); line-height: 1.3; }
+
+        /* HUD Superior do Jogo */
+        .game-hud {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 800;
+            font-size: 14px;
+            margin-bottom: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 12px 18px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Mapa Visual (Suas Obras) */
+        .game-map-container {
+            background: #0b0f19;
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255,255,255,0.03);
+            text-align: left;
+        }
+        .map-title { font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--neon-purple); margin-bottom: 8px; letter-spacing: 0.5px; }
+        .map-grid { display: flex; gap: 8px; flex-wrap: wrap; min-height: 45px; background: rgba(255,255,255,0.02); border-radius: 10px; padding: 8px; align-items: center; }
+        .map-item { font-size: 24px; animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes popIn { from { transform: scale(0); } to { transform: scale(1); } }
+
+        /* Barras de Status Dinâmicas */
+        .status-panel {
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 18px;
+            padding: 16px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255,255,255,0.02);
+        }
+        .bar-group { margin-bottom: 14px; text-align: left; }
+        .bar-group:last-child { margin-bottom: 0; }
+        .bar-label { display: flex; justify-content: space-between; font-weight: 700; font-size: 13px; margin-bottom: 5px; }
+        .bar-track { background: #334155; border-radius: 10px; height: 22px; overflow: hidden; position: relative; }
+        .bar-fill { height: 100%; width: 0%; transition: width 0.3s ease-out; }
+
+        /* Lista de Lojas/Usinas */
+        .shop-title { font-size: 15px; text-align: left; font-weight: 700; margin-bottom: 12px; color: var(--text-light); border-left: 4px solid var(--neon-blue); padding-left: 8px; }
+        .usina-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 12px;
+            text-align: left;
+            transition: all 0.2s;
+        }
+        .usina-card:hover { border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.04); transform: translateX(2px); }
+        .usina-top { display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 16px; margin-bottom: 6px; }
+        .usina-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 10px; line-height: 1.4; }
+        .tag-group { display: flex; gap: 4px; flex-wrap: wrap; }
+        .tag { font-size: 11px; padding: 2px 6px; border-radius: 6px; color: #0f172a; font-weight: 800; }
+        .tag-cost { background-color: var(--text-muted); color: #fff; }
+        .tag-ene { background-color: var(--neon-blue); }
+        .tag-pop { background-color: var(--neon-red); }
+
+        .btn-mini { padding: 10px; font-size: 14px; margin-top: 5px; margin-bottom: 0; border-radius: 10px; color: #0f172a; }
+
+        /* Alertas e Feed */
+        .alert-bar { background-color: rgba(248, 113, 113, 0.15); color: var(--neon-red); border: 1px solid var(--neon-red); padding: 10px; border-radius: 12px; font-size: 13px; font-weight: 700; margin-bottom: 12px; display: none; }
+        .feed-box { background-color: #0b0f19; color: #e2e8f0; padding: 12px; border-radius: 12px; font-size: 12px; max-height: 85px; overflow-y: auto; margin-top: 15px; border-left: 3px solid var(--neon-blue); text-align: left; }
+        .feed-box div { border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 4px; margin-bottom: 4px; }
+
+        /* Modais de Crises Pop-up */
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.85); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 15px; backdrop-filter: blur(5px); }
+        .modal { background: var(--panel-bg); padding: 26px; border-radius: 24px; max-width: 480px; width: 100%; box-shadow: 0 25px 50px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.08); text-align: center; }
+        .modal h3 { color: var(--neon-red); margin-bottom: 10px; font-size: 22px; font-weight: 800; }
+        .modal p { font-size: 14px; color: var(--text-light); text-align: justify; margin-bottom: 20px; line-height: 1.5; }
+
+        /* Regras Simplificadas */
+        .rules-grid { text-align: left; margin: 15px 0; }
+        .rules-grid li { margin-bottom: 10px; font-size: 14px; background: rgba(255,255,255,0.02); padding: 10px; border-radius: 10px; border-left: 3px solid var(--neon-blue); list-style: none; }
+
+        footer { text-align: center; font-size: 12px; color: var(--text-muted); padding: 15px 0; border-top: 1px solid rgba(255,255,255,0.05); margin-top: auto; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- 1. TELA: MENU PRINCIPAL -->
+        <div id="screen-menu" class="screen active">
+            <div class="card-box">
+                <div class="eureka-badge">PROJETO EUREKA</div>
+                <h1>🌍 Ecotopia Ultimate</h1>
+                <p style="color: var(--text-muted); font-size: 15px; margin-bottom: 10px;">O Grande Simulador de Energia e Ética</p>
+                
+                <div class="group-tag">
+                    <p>Integrantes do Grupo:</p>
+                    <span>Kauã, Pedro, Micael</span>
+                </div>
+
+                <button class="btn btn-green" onclick="changeNav('screen-player')">Jogar Partida 🚀</button>
+                <button class="btn" onclick="changeNav('screen-help')">Ver Regras do Jogo ❓</button>
+            </div>
+        </div>
+
+        <!-- 2. TELA: REGRAS DO JOGO -->
+        <div id="screen-help" class="screen">
+            <div class="card-box">
+                <h2>❓ Como Funciona?</h2>
+                <ul class="rules-grid">
+                    <li>🎯 <strong>Objetivo:</strong> Compre usinas para alcançar a meta de <strong>100% de Energia</strong> na cidade.</li>
+                    <li>❤️ <strong>Povo e Ética:</strong> Obras baratas geram crises. Se a Felicidade cair para <strong>0%</strong>, você toma impeachment!</li>
+                    <li>💸 <strong>Falência:</strong> Se o dinheiro acabar antes dos 100%, o jogo acaba na hora.</li>
+                    <li>⚔️ <strong>Quests e Dilemas:</strong> Toda obra nova gera um impacto na natureza ou sociedade que você terá que resolver!</li>
+                </ul>
+                <button class="btn" onclick="changeNav('screen-menu')">Entendido, Voltar!</button>
+            </div>
+        </div>
+
+        <!-- 3. TELA: ESCOLHA DO LÍDER -->
+        <div id="screen-player" class="screen">
+            <div class="card-box">
+                <h2>👤 Selecione sua Classe</h2>
+                <p style="font-size:14px; color:var(--text-muted); margin-bottom:15px;">Cada líder altera os recursos iniciais da partida:</p>
+                
+                <div class="char-grid">
+                    <!-- Governador: DEFAULT SELECIONADO -->
+                    <div class="char-option selected" id="o-gov" onclick="selectLeader('governador')">
+                        <h3>⚖️ O Governador</h3>
+                        <div class="char-perks">Equilibrado (100 💰 / 100% ❤️)</div>
+                        <p class="char-flavor">O meio-termo perfeito para iniciantes. Contas e povo estáveis.</p>
+                    </div>
+
+                    <div class="char-option" id="o-emp" onclick="selectLeader('empresario')">
+                        <h3>🛠️ O Empresário</h3>
+                        <div class="char-perks">+25 💰 Iniciais | -15% ❤️</div>
+                        <p class="char-flavor">Caixa cheio, mas o povo detesta seu foco apenas no lucro.</p>
+                    </div>
+
+                    <div class="char-option" id="o-nat" onclick="selectLeader('natureza')">
+                        <h3>🌿 O Protetor</h3>
+                        <div class="char-perks">+15% ❤️ Inicial | -20 💰</div>
+                        <p class="char-flavor">Amado pelo povo, mas com pouco dinheiro para investir.</p>
+                    </div>
+
+                    <div class="char-option" id="o-eng" onclick="selectLeader('engenheiro')">
+                        <h3>🏗️ Engenheiro Chefe</h3>
+                        <div class="char-perks">+20% ⚡ Grátis | -10 💰</div>
+                        <p class="char-flavor">Já começa a partida com parte da rede elétrica funcionando.</p>
+                    </div>
+
+                    <div class="char-option" id="o-pop" onclick="selectLeader('populista')">
+                        <h3>📣 O Populista</h3>
+                        <div class="char-perks">+30% ❤️ Iniciais | -25 💰</div>
+                        <p class="char-flavor">Carisma extremo que perdoa erros, mas péssimo gestor financeiro.</p>
+                    </div>
+
+                    <div class="char-option" id="o-inv" onclick="selectLeader('investidor')">
+                        <h3>🤑 O Investidor</h3>
+                        <div class="char-perks">+50 💰 Iniciais | -30% ❤️</div>
+                        <p class="char-flavor">Dinheiro infinito, mas basta um erro ético para levar impeachment.</p>
+                    </div>
+                </div>
+
+                <button class="btn btn-green" id="btn-play-now" onclick="startMandate()">Iniciar Jogo 🎮</button>
+                <button class="btn" style="background:#334155; color:white; box-shadow:none;" onclick="changeNav('screen-menu')">Voltar</button>
+            </div>
+        </div>
+
+        <!-- 4. TELA: O TABULEIRO DO JOGO (DASHBOARD) -->
+        <div id="screen-game" class="screen">
+            <div class="card-box">
+                <div class="game-hud">
+                    <span id="hud-leader" style="color:var(--neon-green);">Líder: ⚖️ Governador</span>
+                    <span id="hud-round" style="color: var(--neon-purple);">Rodada: 1</span>
+                </div>
+                
+                <!-- Mapa Lúdico Visual -->
+                <div class="game-map-container">
+                    <div class="map-title">🗺️ Seu Mapa de Infraestruturas:</div>
+                    <div class="map-grid" id="visual-map"></div>
+                </div>
+
+                <!-- Painel de Indicadores -->
+                <div class="status-panel">
+                    <div class="bar-group">
+                        <div class="bar-label"><span>⚡ Rede Elétrica (Meta: 100%)</span><span id="v-ene">0%</span></div>
+                        <div class="bar-track"><div id="f-ene" class="bar-fill" style="background-color: var(--neon-blue);"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label"><span>💰 Caixa Financeiro</span><span id="v-din">100</span></div>
+                        <div class="bar-track"><div id="f-din" class="bar-fill" style="background-color: var(--neon-amber);"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label"><span>❤️ Felicidade e Ética</span><span id="v-fel">100%</span></div>
+                        <div class="bar-track"><div id="f-fel" class="bar-fill" style="background-color: var(--neon-green);"></div></div>
+                    </div>
+                </div>
+
+                <div class="alert-bar" id="ui-game-error">Saldo insuficiente para financiar esta usina!</div>
+
+                <h3 class="shop-title">Lojas de Tecnologias:</h3>
+                
+                <!-- 1. SOLAR -->
+                <div class="usina-card">
+                    <div class="usina-top">
+                        <span>☀️ Painéis Solares</span>
+                        <div class="tag-group"><span class="tag tag-cost">40 💰</span><span class="tag tag-ene">+20% ⚡</span><span class="tag tag-pop" style="background:var(--neon-red); color:white;">-5% ❤️</span></div>
+                    </div>
+                    <button class="btn btn-green btn-mini" onclick="buildProject('solar')">Construir Solar</button>
+                </div>
+
+                <!-- 2. EÓLICA -->
+                <div class="usina-card">
+                    <div class="usina-top">
+                        <span>💨 Turbinas Eólicas</span>
+                        <div class="tag-group"><span class="tag tag-cost">20 💰</span><span class="tag tag-ene">+25% ⚡</span><span class="tag tag-pop" style="background:var(--neon-red); color:white;">-15% ❤️</span></div>
+                    </div>
+                    <button class="btn btn-green btn-mini" onclick="buildProject('eolica')">Construir Eólica</button>
+                </div>
+
+                <!-- 3. HIDRELÉTRICA -->
+                <div class="usina-card">
+                    <div class="usina-top">
+                        <span>💧 Grande Hidrelétrica</span>
+                        <div class="tag-group"><span class="tag tag-cost">15 💰</span><span class="tag tag-ene">+40% ⚡</span><span class="tag tag-pop" style="background:var(--neon-red); color:white;">-30% ❤️</span></div>
+                    </div>
+                    <button class="btn btn-green btn-mini" onclick="buildProject('hidro')">Construir Hidrelétrica</button>
+                </div>
+
+                <!-- 4. BIOMASSA -->
+                <div class="usina-card">
+                    <div class="usina-top">
+                        <span>🪵 Central de Biomassa</span>
+                        <div class="tag-group"><span class="tag tag-cost">25 💰</span><span class="tag tag-ene">+30% ⚡</span><span class="tag tag-pop" style="background:var(--neon-red); color:white;">-10% ❤️</span></div>
+                    </div>
+                    <button class="btn btn-green btn-mini" onclick="buildProject('biomassa')">Construir Biomassa</button>
+                </div>
+
+                <!-- 5. MAREMOTRIZ -->
+                <div class="usina-card">
+                    <div class="usina-top">
+                        <span>🌊 Energia das Ondas</span>
+                        <div class="tag-group"><span class="tag tag-cost">35 💰</span><span class="tag tag-ene">+35% ⚡</span><span class="tag tag-pop" style="background:var(--neon-red); color:white;">-5% ❤️</span></div>
+                    </div>
+                    <button class="btn btn-green btn-mini" onclick="buildProject('maremotriz')">Construir Ondas</button>
+                </div>
+
+                <!-- Histórico Log -->
+                <div class="feed-box" id="feed-log-box">
+                    <div>Conselho aberto. Construa algo para iniciar a Rodada 1.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. TELA: FIM DE JOGO -->
+        <div id="screen-gameover" class="screen">
+            <div class="card-box">
+                <h2 id="go-title-lbl" style="font-size: 30px;">Mandato Concluído</h2>
+                <p id="go-text-lbl" style="margin-top:14px; margin-bottom:24px; line-height:1.6; font-size:15px;"></p>
+                <button class="btn btn-green" onclick="changeNav('screen-menu')">Jogar Novamente 🔄</button>
+            </div>
+        </div>
+
+        <footer>
+            Projeto Eureka &copy; 2026 | Desenvolvido por: <strong>Kauã, Pedro, Micael</strong>
+        </footer>
+
+    </div>
+
+    <!-- JANELA DE IMPACTO (MODAL POP-UP DAS QUESTS) -->
+    <div class="overlay" id="crisis-popup">
+        <div class="modal">
+            <h3 id="pop-title">Quest de Impacto!</h3>
+            <p id="pop-desc">Histórico da situação...</p>
+            <div id="pop-options"></div>
+        </div>
+    </div>
+
+    <script>
+        // Set Governador as default to prevent "Freeze" bug
+        let leaderClass = "governador";
+        let energia = 0, dinheiro = 100, felicidade = 100, rodada = 1;
+        let historicoCrises = { solar: false, eolica: false, hidro: false, biomassa: false, maremotriz: false };
+
+        function changeNav(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        function selectLeader(classType) {
+            leaderClass = classType;
+            document.querySelectorAll('.char-option').forEach(o => o.classList.remove('selected'));
+            
+            if(classType === 'empresario') document.getElementById('o-emp').classList.add('selected');
+            else if(classType === 'natureza') document.getElementById('o-nat').classList.add('selected');
+            else if(classType === 'governador') document.getElementById('o-gov').classList.add('selected');
+            else if(classType === 'engenheiro') document.getElementById('o-eng').classList.add('selected');
+            else if(classType === 'populista') document.getElementById('o-pop').classList.add('selected');
+            else if(classType === 'investidor') document.getElementById('o-inv').classList.add('selected');
+        }
+
+        function startMandate() {
+            energia = 0; rodada = 1;
+            document.getElementById('visual-map').innerHTML = "";
+            document.getElementById('feed-log-box').innerHTML = "<div>Conselho aberto. Construa algo para avançar.</div>";
+            document.getElementById('ui-game-error').style.display = "none";
+            
+            for (let k in historicoCrises) historicoCrises[k] = false;
+
+            // Valores de Classes
+            if(leaderClass === 'empresario') { dinheiro = 125; felicidade = 85; document.getElementById('hud-leader').innerText = "🛠️ Empresário"; }
+            else if(leaderClass === 'natureza') { dinheiro = 80; felicidade = 115; document.getElementById('hud-leader').innerText = "🌿 Protetor"; }
+            else if(leaderClass === 'governador') { dinheiro = 100; felicidade = 100; document.getElementById('hud-leader').innerText = "⚖️ Governador"; }
+            else if(leaderClass === 'engenheiro') { dinheiro = 90; felicidade = 100; energia = 20; document.getElementById('hud-leader').innerText = "🏗️ Engenheiro"; }
+            else if(leaderClass === 'populista') { dinheiro = 75; felicidade = 130; document.getElementById('hud-leader').innerText = "📣 Populista"; }
+            else if(leaderClass === 'investidor') { dinheiro = 150; felicidade = 70; document.getElementById('hud-leader').innerText = "🤑 Investidor"; }
+
+            renderGameStats();
+            changeNav('screen-game');
+        }
+
+        function renderGameStats() {
+            document.getElementById('lbl-ene').innerText = energia + "%";
+            document.getElementById('lbl-din').innerText = dinheiro + " moedas";
+            document.getElementById('lbl-fel').innerText = felicidade + "%";
+            document.getElementById('hud-round').innerText = "Rodada: " + rodada;
+
+            document.getElementById('f-ene').style.width = Math.min(energia, 100) + "%";
+            // Barras ajustadas dinamicamente para comportar líderes muito ricos ou muito felizes
+            document.getElementById('f-din').style.width = Math.min(Math.max(dinheiro, 0), 150) / 1.5 + "%";
+            document.getElementById('f-fel').style.width = Math.min(Math.max(felicidade, 0), 130) / 1.3 + "%";
+
+            processRulesEnd();
+        }
+
+        function writeFeed(msg) {
+            let log = document.getElementById('feed-log-box');
+            log.innerHTML = "<div>" + msg + "</div>" + log.innerHTML;
+        }
+
+        function addMapIcon(emoji) {
+            let m = document.getElementById('visual-map');
+            let item = document.createElement('span');
+            item.className = "map-item";
+            item.innerText = emoji;
+            m.appendChild(item);
+        }
+
+        function buildProject(tipo) {
+            document.getElementById('ui-game-error').style.display = "none";
+            
+            if(tipo === 'solar') {
+                if(dinheiro < 40) { showWarningBar(); return; }
+                dinheiro -= 40; energia += 20; felicidade -= 5;
+                addMapIcon("☀️"); writeFeed(`[Rod. ${rodada}] ☀️ Painéis instalados.`);
+                if(!historicoCrises.solar) { triggerQuest('solar'); return; }
+            } else if(tipo === 'eolica') {
+                if(dinheiro < 20) { showWarningBar(); return; }
+                dinheiro -= 20; energia += 25; felicidade -= 15;
+                addMapIcon("💨"); writeFeed(`[Rod. ${rodada}] 💨 Torres Eólicas ativadas.`);
+                if(!historicoCrises.eolica) { triggerQuest('eolica'); return; }
+            } else if(tipo === 'hidro') {
+                if(dinheiro < 15) { showWarningBar(); return; }
+                dinheiro -= 15; energia += 40; felicidade -= 30;
+                addMapIcon("💧"); writeFeed(`[Rod. ${rodada}] 💧 Represa erguida.`);
+                if(!historicoCrises.hidro) { triggerQuest('hidro'); return; }
+            } else if(tipo === 'biomassa') {
+                if(dinheiro < 25) { showWarningBar(); return; }
+                dinheiro -= 25; energia += 30; felicidade -= 10;
+                addMapIcon("🪵"); writeFeed(`[Rod. ${rodada}] 🪵 Usina Biomassa montada.`);
+                if(!historicoCrises.biomassa) { triggerQuest('biomassa'); return; }
+            } else if(tipo === 'maremotriz') {
+                if(dinheiro < 35) { showWarningBar(); return; }
+                dinheiro -= 35; energia += 35; felicidade -= 5;
+                addMapIcon("🌊"); writeFeed(`[Rod. ${rodada}] 🌊 Turbinas de Ondas instaladas.`);
+                if(!historicoCrises.maremotriz) { triggerQuest('maremotriz'); return; }
+            }
+            rodada++;
+            renderGameStats();
+        }
+
+        function showWarningBar() {
+            let alertUI = document.getElementById('ui-game-error');
+            alertUI.style.display = "block";
+            setTimeout(() => { alertUI.style.display = "none"; }, 2500);
+        }
+
+        function triggerQuest(tipo) {
+            historicoCrises[tipo] = true;
+            let overlay = document.getElementById('crisis-popup');
+            let pTitle = document.getElementById('pop-title');
+            let pDesc = document.getElementById('pop-desc');
+            let opts = document.getElementById('pop-options');
+            opts.innerHTML = "";
+
+            if(tipo === 'solar') {
+                pTitle.innerText = "🔋 Lixo Tóxico";
+                pDesc.innerText = "Painéis antigos desgastaram e o descarte está sujando rios locais. O que fazer?";
+                injectChoice("Reciclar tudo (-15 💰, +15% ❤️)", () => { dinheiro -= 15; felicidade += 15; writeFeed("🛡️ Baterias recicladas."); exitQuest(); });
+                injectChoice("Descartar no lixão (0 💰, -25% ❤️)", () => { felicidade -= 25; writeFeed("❌ Rio contaminado."); exitQuest(); });
+            }
+            else if(tipo === 'eolica') {
+                pTitle.innerText = "🦜 Aves em Perigo";
+                pDesc.innerText = "As pás gigantes estão bloqueando a rota das aves. Ativistas estão na rua!";
+                injectChoice("Instalar radares aviários (-15 💰, +20% ❤️)", () => { dinheiro -= 15; felicidade += 20; writeFeed("🛡️ Radares ativados."); exitQuest(); });
+                injectChoice("Ignorar o problema (0 💰, -25% ❤️)", () => { felicidade -= 25; writeFeed("❌ Fauna prejudicada."); exitQuest(); });
+            } 
+            else if(tipo === 'hidro') {
+                pTitle.innerText = "🏠 A Aldeia Alagada";
+                pDesc.innerText = "A barragem vai alagar uma vila tradicional inteira. Eles precisam de ajuda!";
+                injectChoice("Construir bairro de reassentamento (-25 💰, +30% ❤️)", () => { dinheiro -= 25; felicidade += 30; writeFeed("🏡 Famílias salvas."); exitQuest(); });
+                injectChoice("Acionar polícia para remoção (0 💰, -40% ❤️)", () => { felicidade -= 40; writeFeed("❌ Remoção violenta gerou caos."); exitQuest(); });
+            }
+            else if(tipo === 'biomassa') {
+                pTitle.innerText = "😷 Fumaça Tóxica";
+                pDesc.innerText = "A queima de resíduos gerou uma nuvem mal cheirosa na cidade. Crianças estão com asma.";
+                injectChoice("Comprar filtros de ar químicos (-10 💰, +20% ❤️)", () => { dinheiro -= 10; felicidade += 20; writeFeed("🛡️ Filtros instalados."); exitQuest(); });
+                injectChoice("Ignorar as queixas (0 💰, -20% ❤️)", () => { felicidade -= 20; writeFeed("❌ População respirando fumaça."); exitQuest(); });
+            }
+            else if(tipo === 'maremotriz') {
+                pTitle.innerText = "🎣 Pescadores Falidos";
+                pDesc.innerText = "As turbinas oceânicas afugentaram os peixes. Os pescadores estão falindo.";
+                injectChoice("Financiar barcos de alto-mar (-20 💰, +25% ❤️)", () => { dinheiro -= 20; felicidade += 25; writeFeed("🏡 Pescadores amparados."); exitQuest(); });
+                injectChoice("Proibir barcos de chegarem perto (0 💰, -30% ❤️)", () => { felicidade -= 30; writeFeed("❌ Pescadores perderam o sustento."); exitQuest(); });
+            }
+            overlay.style.display = "flex";
+        }
+
+        function injectChoice(text, callback) {
+            let btn = document.createElement('button');
+            btn.className = "btn";
+            btn.style.fontSize = "14px";
+            btn.style.padding = "12px";
+            btn.innerText = text;
+            btn.onclick = callback;
+            document.getElementById('pop-options').appendChild(btn);
+        }
+
+        function exitQuest() {
+            document.getElementById('crisis-popup').style.display = "none";
+            rodada++;
+            renderGameStats();
+        }
+
+        function processRulesEnd() {
+            let labelTitle = document.getElementById('go-title-lbl');
+            let labelBody = document.getElementById('go-text-lbl');
+            let finalTrigger = false;
+
+            if(energia >= 100 && felicidade >= 50) {
+                labelTitle.innerText = "🏆 Vitória Ecológica!";
+                labelTitle.style.color = "var(--neon-green)";
+                labelBody.innerText = `Você atingiu 100% de energia e fechou com ${felicidade}% de Felicidade. Ecotopia é um sucesso mundial de sustentabilidade!`;
+                finalTrigger = true;
+            }
+            else if(felicidade <= 0) {
+                labelTitle.innerText = "❌ Impeachment Escandaloso";
+                labelTitle.style.color = "var(--neon-red)";
+                labelBody.innerText = "A felicidade caiu para 0%. Ao focar apenas em usinas baratas, você arruinou a vida das pessoas e a natureza. O povo se revoltou!";
+                finalTrigger = true;
+            } 
+            else if(dinheiro < 15 && energia < 100) {
+                labelTitle.innerText = "💸 Falência Total";
+                labelTitle.style.color = "var(--neon-red)";
+                labelBody.innerText = `Restaram apenas ${dinheiro} moedas. A usina mais barata custa 15. A cidade quebrou na rodada ${rodada} por falta de planejamento financeiro.`;
+                finalTrigger = true;
+            }
+
+            if(finalTrigger) {
+                changeNav('screen-gameover');
+            }
+        }
+    </script>
+</body>
+</html>
+
