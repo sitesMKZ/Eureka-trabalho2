@@ -259,7 +259,6 @@
 
     <div class="container">
         
-        <!-- 1. TELA: MENU PRINCIPAL -->
         <div id="screen-menu" class="screen active">
             <div class="card-box">
                 <div class="eureka-badge">PROJETO EUREKA</div>
@@ -276,7 +275,6 @@
             </div>
         </div>
 
-        <!-- 2. TELA: REGRAS DO JOGO -->
         <div id="screen-help" class="screen">
             <div class="card-box">
                 <h2>❓ Como Funciona?</h2>
@@ -290,14 +288,12 @@
             </div>
         </div>
 
-        <!-- 3. TELA: ESCOLHA DO LÍDER -->
         <div id="screen-player" class="screen">
             <div class="card-box">
                 <h2>👤 Selecione sua Classe</h2>
                 <p style="font-size:14px; color:var(--text-muted); margin-bottom:15px;">Cada líder altera os recursos iniciais da partida:</p>
                 
                 <div class="char-grid">
-                    <!-- Governador: DEFAULT SELECIONADO -->
                     <div class="char-option selected" id="o-gov" onclick="selectLeader('governador')">
                         <h3>⚖️ O Governador</h3>
                         <div class="char-perks">Equilibrado (100 💰 / 100% ❤️)</div>
@@ -340,7 +336,6 @@
             </div>
         </div>
 
-        <!-- 4. TELA: O TABULEIRO DO JOGO (DASHBOARD) -->
         <div id="screen-game" class="screen">
             <div class="card-box">
                 <div class="game-hud">
@@ -348,13 +343,11 @@
                     <span id="hud-round" style="color: var(--neon-purple);">Rodada: 1</span>
                 </div>
                 
-                <!-- Mapa Lúdico Visual -->
                 <div class="game-map-container">
                     <div class="map-title">🗺️ Seu Mapa de Infraestruturas:</div>
                     <div class="map-grid" id="visual-map"></div>
                 </div>
 
-                <!-- Painel de Indicadores -->
                 <div class="status-panel">
                     <div class="bar-group">
                         <div class="bar-label"><span>⚡ Rede Elétrica (Meta: 100%)</span><span id="v-ene">0%</span></div>
@@ -374,7 +367,6 @@
 
                 <h3 class="shop-title">Lojas de Tecnologias:</h3>
                 
-                <!-- 1. SOLAR -->
                 <div class="usina-card">
                     <div class="usina-top">
                         <span>☀️ Painéis Solares</span>
@@ -383,7 +375,6 @@
                     <button class="btn btn-green btn-mini" onclick="buildProject('solar')">Construir Solar</button>
                 </div>
 
-                <!-- 2. EÓLICA -->
                 <div class="usina-card">
                     <div class="usina-top">
                         <span>💨 Turbinas Eólicas</span>
@@ -392,7 +383,6 @@
                     <button class="btn btn-green btn-mini" onclick="buildProject('eolica')">Construir Eólica</button>
                 </div>
 
-                <!-- 3. HIDRELÉTRICA -->
                 <div class="usina-card">
                     <div class="usina-top">
                         <span>💧 Grande Hidrelétrica</span>
@@ -401,7 +391,6 @@
                     <button class="btn btn-green btn-mini" onclick="buildProject('hidro')">Construir Hidrelétrica</button>
                 </div>
 
-                <!-- 4. BIOMASSA -->
                 <div class="usina-card">
                     <div class="usina-top">
                         <span>🪵 Central de Biomassa</span>
@@ -410,7 +399,6 @@
                     <button class="btn btn-green btn-mini" onclick="buildProject('biomassa')">Construir Biomassa</button>
                 </div>
 
-                <!-- 5. MAREMOTRIZ -->
                 <div class="usina-card">
                     <div class="usina-top">
                         <span>🌊 Energia das Ondas</span>
@@ -419,14 +407,12 @@
                     <button class="btn btn-green btn-mini" onclick="buildProject('maremotriz')">Construir Ondas</button>
                 </div>
 
-                <!-- Histórico Log -->
                 <div class="feed-box" id="feed-log-box">
                     <div>Conselho aberto. Construa algo para iniciar a Rodada 1.</div>
                 </div>
             </div>
         </div>
 
-        <!-- 5. TELA: FIM DE JOGO -->
         <div id="screen-gameover" class="screen">
             <div class="card-box">
                 <h2 id="go-title-lbl" style="font-size: 30px;">Mandato Concluído</h2>
@@ -441,7 +427,6 @@
 
     </div>
 
-    <!-- JANELA DE IMPACTO (MODAL POP-UP DAS QUESTS) -->
     <div class="overlay" id="crisis-popup">
         <div class="modal">
             <h3 id="pop-title">Quest de Impacto!</h3>
@@ -493,7 +478,7 @@
         }
 
         function renderGameStats() {
-            // Atualiza os valores em texto na tela (CORRIGIDO)
+            // Atualiza os valores em texto na tela
             document.getElementById('v-ene').innerText = energia + "%";
             document.getElementById('v-din').innerText = dinheiro + " moedas";
             document.getElementById('v-fel').innerText = felicidade + "%";
