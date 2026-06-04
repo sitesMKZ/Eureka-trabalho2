@@ -9,7 +9,48 @@
 <body>
     <div class="container">
         
-        <div id="screen-menu" class="screen active">
+        <div id="screen-login" class="screen">
+            <div class="card-box">
+                <div class="eureka-badge">ACESSO RESTRITO</div>
+                <h2>Crie seu Perfil de Gestor</h2>
+                <p class="subtitle" style="margin-bottom: 20px;">Identifique-se para o banco de dados do governo.</p>
+                
+                <input type="text" id="input-player-name" class="game-input" placeholder="Ex: Kauã" maxlength="12" autocomplete="off">
+                
+                <h3 style="font-size: 14px; margin: 16px 0 10px; color: var(--text-muted); text-transform: uppercase;">Escolha seu Avatar:</h3>
+                <div class="avatar-grid" id="avatar-selection">
+                    <div class="avatar-option selected" onclick="audioClick(); selectAvatar(this, '👨‍💼')">👨‍💼</div>
+                    <div class="avatar-option" onclick="audioClick(); selectAvatar(this, '👩‍🔬')">👩‍🔬</div>
+                    <div class="avatar-option" onclick="audioClick(); selectAvatar(this, '🤖')">🤖</div>
+                    <div class="avatar-option" onclick="audioClick(); selectAvatar(this, '👽')">👽</div>
+                    <div class="avatar-option" onclick="audioClick(); selectAvatar(this, '🦊')">🦊</div>
+                    <div class="avatar-option" onclick="audioClick(); selectAvatar(this, '🦉')">🦉</div>
+                </div>
+
+                <button class="btn btn-green" style="margin-top: 20px;" onclick="audioClick(); saveProfile()">Acessar Sistema 🔓</button>
+            </div>
+        </div>
+
+        <div id="screen-trophies" class="screen">
+            <div class="card-box">
+                <h2>🏆 Galeria de Honra</h2>
+                <div id="profile-display" class="group-tag" style="display: flex; align-items: center; justify-content: center; gap: 12px;">
+                    <span id="display-avatar" style="font-size: 32px;">👨‍💼</span>
+                    <div style="text-align: left;">
+                        <p>Gestor Oficial</p>
+                        <span id="display-name" style="color: #fff; font-size: 18px; font-weight: 800;">Nome</span>
+                    </div>
+                </div>
+
+                <div class="trophy-grid" id="trophy-list">
+                    </div>
+
+                <button class="btn btn-back" onclick="audioClick(); changeNav('screen-menu')">Voltar ao Gabinete</button>
+                <button class="btn" style="background: rgba(248, 113, 113, 0.1); color: var(--neon-red); padding: 12px; font-size: 12px;" onclick="audioError(); resetProfile()">Deletar Perfil ⚠️</button>
+            </div>
+        </div>
+
+        <div id="screen-menu" class="screen">
             <div class="card-box">
                 <div class="eureka-badge">PROJETO EUREKA</div>
                 <h1>🌍 Ecotopia Ultimate</h1>
@@ -22,6 +63,7 @@
 
                 <button class="btn btn-green" onclick="audioClick(); changeNav('screen-player')">Jogar Partida 🚀</button>
                 <button class="btn" onclick="audioClick(); changeNav('screen-help')">Ver Regras do Jogo ❓</button>
+                <button class="btn" style="background-color: var(--panel-bg); border: 1px solid var(--neon-purple); color: var(--neon-purple);" onclick="audioClick(); openTrophies()">Sala de Troféus 🏆</button>
             </div>
         </div>
 
@@ -35,7 +77,7 @@
                     <li>🌤️ <strong>Clima:</strong> O clima muda e afeta a eficiência das suas usinas. Diversifique!</li>
                     <li>💸 <strong>Falência:</strong> Se o dinheiro zerar e você não puder construir, o governo quebra.</li>
                 </ul>
-                <button class="btn" onclick="audioClick(); changeNav('screen-menu')">Voltar ao Menu</button>
+                <button class="btn btn-back" onclick="audioClick(); changeNav('screen-menu')">Voltar ao Menu</button>
             </div>
         </div>
 
@@ -192,4 +234,3 @@
     <script src="js/game.js"></script>
 </body>
 </html>
-
