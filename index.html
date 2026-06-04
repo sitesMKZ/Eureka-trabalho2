@@ -4,311 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Ecotopia Ultimate - Edição Expandida</title>
-    <style>
-        :root {
-            --bg-main: #070a13; 
-            --panel-bg: #111827; 
-            --panel-border: rgba(56, 189, 248, 0.2);
-            --text-light: #f8fafc;
-            --text-muted: #64748b;
-            
-            --neon-blue: #38bdf8;
-            --neon-green: #4ade80;
-            --neon-amber: #fbbf24;
-            --neon-red: #f87171;
-            --neon-purple: #c084fc;
-            
-            --shadow-blue: rgba(56, 189, 248, 0.25);
-            --shadow-green: rgba(74, 222, 128, 0.25);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            background-color: var(--bg-main);
-            background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
-            background-size: 24px 24px;
-            color: var(--text-light);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            padding: 12px;
-            overflow-x: hidden;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 680px;
-            margin: auto;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .screen {
-            display: none;
-            animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .screen.active {
-            display: block;
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(12px); filter: blur(4px); }
-            to { opacity: 1; transform: translateY(0); filter: blur(0); }
-        }
-
-        .card-box {
-            background: var(--panel-bg);
-            padding: 24px;
-            border-radius: 20px;
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255,255,255,0.05);
-            margin-bottom: 16px;
-            border: 1px solid var(--panel-border);
-            text-align: center;
-            position: relative;
-        }
-
-        .card-box::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; height: 4px;
-            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple), var(--neon-green));
-            border-radius: 20px 20px 0 0;
-        }
-
-        .eureka-badge {
-            display: inline-block;
-            background: rgba(192, 132, 252, 0.12);
-            color: var(--neon-purple);
-            border: 1px solid rgba(192, 132, 252, 0.25);
-            padding: 5px 14px;
-            border-radius: 50px;
-            font-weight: 800;
-            font-size: 11px;
-            letter-spacing: 2px;
-            margin-bottom: 16px;
-            text-transform: uppercase;
-        }
-
-        h1 {
-            font-size: 38px;
-            font-weight: 900;
-            background: linear-gradient(135deg, #fff, var(--neon-blue));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 8px;
-            letter-spacing: -1px;
-        }
-
-        h2 {
-            font-size: 24px;
-            font-weight: 800;
-            margin-bottom: 12px;
-            letter-spacing: -0.5px;
-        }
-
-        .group-tag {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            padding: 12px;
-            border-radius: 14px;
-            margin: 16px 0 24px 0;
-        }
-        .group-tag p {
-            font-size: 11px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 4px;
-        }
-        .group-tag span {
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--neon-amber);
-        }
-
-        .btn {
-            display: block;
-            width: 100%;
-            padding: 16px;
-            font-size: 15px;
-            font-weight: 800;
-            color: #070a13;
-            background-color: var(--neon-blue);
-            border: none;
-            border-radius: 14px;
-            cursor: pointer;
-            transition: transform 0.1s ease, filter 0.1s ease, box-shadow 0.1s ease;
-            text-align: center;
-            box-shadow: 0 4px 14px var(--shadow-blue);
-            margin-bottom: 12px;
-            user-select: none;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            touch-action: manipulation;
-        }
-        
-        @media (hover: hover) {
-            .btn:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 6px 20px rgba(56, 189, 248, 0.45);
-                filter: brightness(1.1);
-            }
-        }
-        
-        .btn:active { 
-            transform: translateY(1px) scale(0.98); 
-            filter: brightness(0.9);
-            box-shadow: 0 2px 8px var(--shadow-blue);
-        }
-        
-        .btn-green { 
-            background-color: var(--neon-green); 
-            box-shadow: 0 4px 14px var(--shadow-green); 
-        }
-        @media (hover: hover) {
-            .btn-green:hover { box-shadow: 0 6px 20px rgba(74, 222, 128, 0.45); }
-        }
-        .btn-green:active { box-shadow: 0 2px 8px var(--shadow-green); }
-
-        .char-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        @media(max-width: 480px) { .char-grid { grid-template-columns: 1fr; } }
-
-        .char-option {
-            background: rgba(0, 0, 0, 0.25);
-            border: 2px solid rgba(255, 255, 255, 0.04);
-            border-radius: 14px;
-            padding: 14px;
-            cursor: pointer;
-            transition: all 0.15s ease;
-            text-align: left;
-            touch-action: manipulation;
-        }
-        .char-option:hover { border-color: rgba(56, 189, 248, 0.4); }
-        .char-option.selected {
-            border-color: var(--neon-green);
-            background: rgba(74, 222, 128, 0.05);
-            box-shadow: 0 0 12px rgba(74, 222, 128, 0.15);
-        }
-        .char-option h3 { font-size: 15px; color: #fff; margin-bottom: 3px; }
-        .char-perks { font-size: 11px; font-weight: 800; color: var(--neon-purple); margin-bottom: 6px; }
-        .char-flavor { font-size: 12px; color: var(--text-muted); line-height: 1.3; }
-
-        .game-hud {
-            display: flex;
-            justify-content: space-between;
-            font-weight: 800;
-            font-size: 12px;
-            margin-bottom: 12px;
-            background: rgba(0, 0, 0, 0.4);
-            padding: 12px 16px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            text-transform: uppercase;
-        }
-
-        .game-map-container {
-            background: #04070d;
-            border-radius: 14px;
-            padding: 14px;
-            margin-bottom: 16px;
-            border: 1px solid rgba(255,255,255,0.01);
-            text-align: left;
-        }
-        .map-title { font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--neon-purple); margin-bottom: 8px; letter-spacing: 0.5px; }
-        .map-grid { display: flex; gap: 8px; flex-wrap: wrap; min-height: 50px; background: rgba(0,0,0,0.3); border-radius: 10px; padding: 8px; align-items: center; border: 1px dashed rgba(255,255,255,0.08); }
-        .map-item { font-size: 24px; animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
-        @keyframes popIn { from { transform: scale(0); } to { transform: scale(1); } }
-
-        .status-panel {
-            background: rgba(0, 0, 0, 0.25);
-            border-radius: 16px;
-            padding: 14px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(255,255,255,0.01);
-        }
-        .bar-group { margin-bottom: 12px; text-align: left; }
-        .bar-group:last-child { margin-bottom: 0; }
-        .bar-label { display: flex; justify-content: space-between; font-weight: 700; font-size: 12px; margin-bottom: 5px; color: #94a3b8; }
-        .bar-track { background: #111827; border-radius: 6px; height: 22px; overflow: hidden; border: 1px solid rgba(255,255,255,0.03); }
-        .bar-fill { height: 100%; width: 0%; transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        
-        .critical-pulse {
-            animation: pulseCritical 0.5s infinite alternate;
-        }
-        @keyframes pulseCritical {
-            from { background-color: #ef4444; box-shadow: 0 0 8px #ef4444; }
-            to { background-color: #991b1b; box-shadow: 0 0 2px #991b1b; }
-        }
-
-        .shop-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
-        .usina-card {
-            background: rgba(0, 0, 0, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            border-radius: 14px;
-            padding: 14px;
-            text-align: left;
-            display: flex;
-            flex-direction: column;
-            transition: border-color 0.15s ease;
-        }
-        .usina-card:hover { border-color: rgba(56, 189, 248, 0.3); }
-        .usina-top { display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 15px; margin-bottom: 10px; }
-        .tag-group { display: flex; gap: 4px; }
-        .tag { font-size: 10px; padding: 2px 6px; border-radius: 5px; color: #070a13; font-weight: 800; }
-        .tag-cost { background-color: #94a3b8; color: #fff; }
-        .tag-ene { background-color: var(--neon-blue); }
-        .tag-pop { background-color: var(--neon-red); }
-        .btn-mini { padding: 12px; font-size: 12px; margin-top: 4px; margin-bottom: 0; border-radius: 10px; }
-
-        .feed-box { background-color: #04070d; color: #64748b; padding: 12px; border-radius: 10px; font-size: 11px; max-height: 95px; overflow-y: auto; margin-top: 16px; border-left: 3px solid var(--neon-blue); text-align: left; }
-        .feed-box div { border-bottom: 1px solid rgba(255,255,255,0.02); padding-bottom: 4px; margin-bottom: 4px; font-family: monospace; }
-
-        .alert-bar { background-color: rgba(248, 113, 113, 0.1); color: var(--neon-red); border: 1px solid rgba(248, 113, 113, 0.3); padding: 10px; border-radius: 10px; font-size: 12px; font-weight: 700; margin-bottom: 12px; display: none; animation: shake 0.2s ease-in-out 2; }
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-3px); } 75% { transform: translateX(3px); } }
-
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 7, 13, 0.9); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 16px; backdrop-filter: blur(5px); }
-        .modal { background: var(--panel-bg); padding: 24px; border-radius: 20px; max-width: 440px; width: 100%; box-shadow: 0 20px 50px rgba(0,0,0,0.8); border: 1px solid var(--neon-red); text-align: center; }
-        .modal h3 { color: var(--neon-red); margin-bottom: 8px; font-size: 22px; font-weight: 800; text-transform: uppercase; }
-        .modal p { font-size: 14px; color: #cbd5e1; text-align: justify; margin-bottom: 20px; line-height: 1.5; }
-
-        .badge-box { background: rgba(192, 132, 252, 0.08); border: 1px solid rgba(192, 132, 252, 0.2); padding: 10px; border-radius: 12px; margin-bottom: 15px; font-weight: 700; color: var(--neon-purple); font-size: 13px; text-transform: uppercase; display: inline-block; }
-        .end-stats-box { background: rgba(0,0,0,0.2); border-radius: 14px; padding: 14px; margin: 16px 0; display: flex; justify-content: space-around; border: 1px solid rgba(255,255,255,0.03); }
-        .end-stat { display: flex; flex-direction: column; gap: 2px; }
-        .end-stat span:first-child { font-size: 10px; color: var(--text-muted); text-transform: uppercase; }
-        .end-stat span:last-child { font-size: 16px; font-weight: 800; color: #fff; }
-
-        .rules-grid { text-align: left; margin: 16px 0; }
-        .rules-grid li { margin-bottom: 10px; font-size: 13px; background: rgba(0,0,0,0.2); padding: 10px 14px; border-radius: 10px; border-left: 3px solid var(--neon-blue); list-style: none; }
-
-        footer { text-align: center; font-size: 11px; color: var(--text-muted); padding: 16px 0; border-top: 1px solid rgba(255,255,255,0.03); margin-top: auto; }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
     <div class="container">
         
-        <!-- MENU PRINCIPAL -->
         <div id="screen-menu" class="screen active">
             <div class="card-box">
                 <div class="eureka-badge">PROJETO EUREKA</div>
                 <h1>🌍 Ecotopia Ultimate</h1>
-                <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 5px;">O Grande Simulador de Energia e Ética</p>
+                <p class="subtitle">O Grande Simulador de Energia e Ética</p>
                 
                 <div class="group-tag">
                     <p>Criado e Desenvolvido pelos Programadores:</p>
@@ -320,25 +25,24 @@
             </div>
         </div>
 
-        <!-- REGRAS -->
         <div id="screen-help" class="screen">
             <div class="card-box">
                 <h2>❓ Como Funciona?</h2>
                 <ul class="rules-grid">
-                    <li>🎯 <strong>Objetivo:</strong> Construa usinas para bater a meta de <strong>100% de Energia</strong> na cidade.</li>
-                    <li>💰 <strong>Impostos Metódicos:</strong> A cada rodada você ganha moedas! População feliz paga mais impostos (+25 💰), população revoltada sonega e gera crises (+5 💰).</li>
-                    <li>❤️ <strong>Ética Social:</strong> Usinas baratas causam crises. Se a Felicidade zerar (<strong>0%</strong>), você toma Impeachment!</li>
-                    <li>💸 <strong>Falência Fiscal:</strong> Se o dinheiro zerar e você não puder construir mais nada na sua vez, o governo quebra.</li>
+                    <li>🎯 <strong>Objetivo:</strong> Construa usinas para bater a meta de <strong>100% de Energia</strong>.</li>
+                    <li>💰 <strong>Impostos:</strong> População feliz paga mais (+25 💰), população revoltada sonega (+5 💰).</li>
+                    <li>❤️ <strong>Ética:</strong> Usinas baratas causam crises. Felicidade zerada (<strong>0%</strong>) gera Impeachment!</li>
+                    <li>🌤️ <strong>Clima:</strong> O clima muda e afeta a eficiência das suas usinas. Diversifique!</li>
+                    <li>💸 <strong>Falência:</strong> Se o dinheiro zerar e você não puder construir, o governo quebra.</li>
                 </ul>
                 <button class="btn" onclick="audioClick(); changeNav('screen-menu')">Voltar ao Menu</button>
             </div>
         </div>
 
-        <!-- SELEÇÃO DE CLASSE -->
         <div id="screen-player" class="screen">
             <div class="card-box">
                 <h2>👤 Selecione seu Líder</h2>
-                <p style="font-size:13px; color:var(--text-muted); margin-bottom:16px;">Classes alteram as condições financeiras e sociais iniciais:</p>
+                <p class="subtitle" style="margin-bottom:16px;">Classes alteram as condições financeiras e sociais iniciais:</p>
                 
                 <div class="char-grid">
                     <div class="char-option selected" id="o-gov" onclick="audioClick(); selectLeader('governador')">
@@ -346,48 +50,43 @@
                         <div class="char-perks">(100 💰 / 100% ❤️)</div>
                         <p class="char-flavor">O meio-termo ideal. Contas e opinião pública sob controle estável.</p>
                     </div>
-
                     <div class="char-option" id="o-emp" onclick="audioClick(); selectLeader('empresario')">
                         <h3>🛠️ O Tecnocrata</h3>
                         <div class="char-perks">(130 💰 / 80% ❤️)</div>
-                        <p class="char-flavor">Caixa cheio de investimentos privados, mas o povo detesta seu foco puramente industrial.</p>
+                        <p class="char-flavor">Caixa cheio, mas o povo detesta seu foco puramente industrial.</p>
                     </div>
-
                     <div class="char-option" id="o-nat" onclick="audioClick(); selectLeader('natureza')">
                         <h3>🌿 Eco-Ativista</h3>
                         <div class="char-perks">(75 💰 / 120% ❤️)</div>
-                        <p class="char-flavor">Altamente amado pelo povo, facilitando impostos altos, mas com verba inicial restrita.</p>
+                        <p class="char-flavor">Altamente amado pelo povo, mas com verba inicial restrita.</p>
                     </div>
-
                     <div class="char-option" id="o-eng" onclick="audioClick(); selectLeader('engenheiro')">
                         <h3>🏗️ O Engenheiro</h3>
                         <div class="char-perks">(90 💰 / 100% ❤️ / +20% ⚡)</div>
-                        <p class="char-flavor">Prático. Já inicia a simulação com parte da infraestrutura elétrica ativa de graça.</p>
+                        <p class="char-flavor">Já inicia com parte da infraestrutura elétrica ativa de graça.</p>
                     </div>
-
                     <div class="char-option" id="o-pop" onclick="audioClick(); selectLeader('populista')">
                         <h3>📣 O Populista</h3>
                         <div class="char-perks">(70 💰 / 135% ❤️)</div>
-                        <p class="char-flavor">Apoio em massa tolera erros éticos graves, mas começa com péssimo planejamento orçamentário.</p>
+                        <p class="char-flavor">Apoio em massa tolera erros, mas péssimo planejamento orçamentário.</p>
                     </div>
-
                     <div class="char-option" id="o-inv" onclick="audioClick(); selectLeader('investidor')">
                         <h3>🤑 O Investidor</h3>
                         <div class="char-perks">(160 💰 / 65% ❤️)</div>
-                        <p class="char-flavor">Dinheiro de sobra para compras em massa, mas basta um deslize ecológico para cair do cargo.</p>
+                        <p class="char-flavor">Dinheiro de sobra, mas um deslize ecológico causa impeachment.</p>
                     </div>
                 </div>
 
                 <button class="btn btn-green" id="btn-play-now" onclick="audioClick(); startMandate()">Iniciar Mandato 🎮</button>
-                <button class="btn" style="background:#1f2937; color:white; box-shadow:none;" onclick="audioClick(); changeNav('screen-menu')">Voltar</button>
+                <button class="btn btn-back" onclick="audioClick(); changeNav('screen-menu')">Voltar</button>
             </div>
         </div>
 
-        <!-- PRINCIPAL DE JOGO -->
         <div id="screen-game" class="screen">
-            <div class="card-box">
+            <div class="card-box" id="game-main-box">
                 <div class="game-hud">
                     <span id="hud-leader" style="color:var(--neon-green);">Líder: ⚖️ Governador</span>
+                    <span id="hud-weather" style="color:var(--neon-amber);">🌤️ Céu Limpo</span>
                     <span id="hud-round" style="color: var(--neon-purple);">Rodada: 1</span>
                 </div>
                 
@@ -398,22 +97,22 @@
 
                 <div class="status-panel">
                     <div class="bar-group">
-                        <div class="bar-label"><span>⚡ Rede Elétrica (Meta: 100%)</span><span id="v-ene">0%</span></div>
-                        <div class="bar-track"><div id="f-ene" class="bar-fill" style="background-color: var(--neon-blue); box-shadow: 0 0 8px var(--neon-blue);"></div></div>
+                        <div class="bar-label"><span>⚡ Rede Elétrica</span><span id="v-ene">0%</span></div>
+                        <div class="bar-track"><div id="f-ene" class="bar-fill fill-blue"></div></div>
                     </div>
                     <div class="bar-group">
                         <div class="bar-label"><span>💰 Tesouro Municipal</span><span id="v-din">100</span></div>
-                        <div class="bar-track"><div id="f-din" class="bar-fill" style="background-color: var(--neon-amber); box-shadow: 0 0 8px var(--neon-amber);"></div></div>
+                        <div class="bar-track"><div id="f-din" class="bar-fill fill-amber"></div></div>
                     </div>
                     <div class="bar-group">
-                        <div class="bar-label"><span>❤️ Aprovação Social e Ética</span><span id="v-fel">100%</span></div>
-                        <div class="bar-track"><div id="f-fel" class="bar-fill" style="background-color: var(--neon-green); box-shadow: 0 0 8px var(--neon-green);"></div></div>
+                        <div class="bar-label"><span>❤️ Aprovação Social</span><span id="v-fel">100%</span></div>
+                        <div class="bar-track"><div id="f-fel" class="bar-fill fill-green"></div></div>
                     </div>
                 </div>
 
-                <div class="alert-bar" id="ui-game-error">Verba insuficiente no caixa público!</div>
+                <div class="alert-bar" id="ui-game-error">Ação inválida ou verba insuficiente!</div>
 
-                <h3 style="font-size: 14px; text-align: left; font-weight: 700; margin-bottom: 12px; color: var(--text-light); border-left: 4px solid var(--neon-blue); padding-left: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Mercado de Engenharia:</h3>
+                <h3 class="shop-title">Mercado de Engenharia:</h3>
                 
                 <div class="shop-grid">
                     <div class="usina-card">
@@ -421,7 +120,7 @@
                             <span>☀️ Painéis Solares</span>
                             <div class="tag-group"><span class="tag tag-cost">40 💰</span><span class="tag tag-ene">+20% ⚡</span><span class="tag tag-pop">-5% ❤️</span></div>
                         </div>
-                        <button class="btn btn-green btn-mini" onclick="buildProject('solar')">Construir Solar</button>
+                        <button class="btn btn-green btn-mini" id="btn-solar" onclick="buildProject('solar')">Construir Solar</button>
                     </div>
 
                     <div class="usina-card">
@@ -429,7 +128,7 @@
                             <span>💨 Complexo Eólico</span>
                             <div class="tag-group"><span class="tag tag-cost">20 💰</span><span class="tag tag-ene">+25% ⚡</span><span class="tag tag-pop">-15% ❤️</span></div>
                         </div>
-                        <button class="btn btn-green btn-mini" onclick="buildProject('eolica')">Construir Eólica</button>
+                        <button class="btn btn-green btn-mini" id="btn-eolica" onclick="buildProject('eolica')">Construir Eólica</button>
                     </div>
 
                     <div class="usina-card">
@@ -437,7 +136,7 @@
                             <span>💧 Usina Hidrelétrica</span>
                             <div class="tag-group"><span class="tag tag-cost">15 💰</span><span class="tag tag-ene">+40% ⚡</span><span class="tag tag-pop">-30% ❤️</span></div>
                         </div>
-                        <button class="btn btn-green btn-mini" onclick="buildProject('hidro')">Erguer Barragem</button>
+                        <button class="btn btn-green btn-mini" id="btn-hidro" onclick="buildProject('hidro')">Erguer Barragem</button>
                     </div>
 
                     <div class="usina-card">
@@ -445,7 +144,7 @@
                             <span>🪵 Central de Biomassa</span>
                             <div class="tag-group"><span class="tag tag-cost">25 💰</span><span class="tag tag-ene">+30% ⚡</span><span class="tag tag-pop">-10% ❤️</span></div>
                         </div>
-                        <button class="btn btn-green btn-mini" onclick="buildProject('biomassa')">Ativar Biomassa</button>
+                        <button class="btn btn-green btn-mini" id="btn-biomassa" onclick="buildProject('biomassa')">Ativar Biomassa</button>
                     </div>
 
                     <div class="usina-card">
@@ -453,23 +152,19 @@
                             <span>🌊 Captadores Maremotriz</span>
                             <div class="tag-group"><span class="tag tag-cost">35 💰</span><span class="tag tag-ene">+35% ⚡</span><span class="tag tag-pop">-5% ❤️</span></div>
                         </div>
-                        <button class="btn btn-green btn-mini" onclick="buildProject('maremotriz')">Instalar Ondas</button>
+                        <button class="btn btn-green btn-mini" id="btn-maremotriz" onclick="buildProject('maremotriz')">Instalar Ondas</button>
                     </div>
                 </div>
 
-                <div class="feed-box" id="feed-log-box">
-                    <div>[SISTEMA] Gabinete aberto. Construa obras para expandir e arrecadar impostos.</div>
-                </div>
+                <div class="feed-box" id="feed-log-box"></div>
             </div>
         </div>
 
-        <!-- TELA GAME OVER -->
         <div id="screen-gameover" class="screen">
             <div class="card-box">
-                <h2 id="go-title-lbl" style="font-size: 30px; font-weight: 900; text-transform: uppercase;">Mandato Encerrado</h2>
-                
+                <h2 id="go-title-lbl" class="go-title">Mandato Encerrado</h2>
                 <div id="ui-badge" class="badge-box">Título: Gestor Padrão</div>
-
+                
                 <div class="end-stats-box">
                     <div class="end-stat"><span>Energia</span><span id="end-v-ene">0%</span></div>
                     <div class="end-stat"><span>Tesouro</span><span id="end-v-din">0</span></div>
@@ -477,18 +172,14 @@
                     <div class="end-stat"><span>Turnos</span><span id="end-v-rod">0</span></div>
                 </div>
 
-                <p id="go-text-lbl" style="margin-top:10px; margin-bottom:24px; line-height:1.6; font-size:14px; color:#cbd5e1; text-align: justify;"></p>
+                <p id="go-text-lbl" class="go-text"></p>
                 <button class="btn btn-green" onclick="audioClick(); changeNav('screen-menu')">Nova Linha de Tempo 🔄</button>
             </div>
         </div>
 
-        <footer>
-            Projeto Eureka &copy; 2026 | Desenvolvido por: <strong>Kauã, Pedro, Micael</strong>
-        </footer>
-
+        <footer>Projeto Eureka &copy; 2026 | Desenvolvido por: <strong>Kauã, Pedro, Micael</strong></footer>
     </div>
 
-    <!-- OVERLAY DAS CRISES -->
     <div class="overlay" id="crisis-popup">
         <div class="modal">
             <h3 id="pop-title">Quest de Impacto!</h3>
@@ -497,349 +188,8 @@
         </div>
     </div>
 
-    <script>
-        // --- MOTOR DE ÁUDIO SINTETIZADO ---
-        let audioCtx = null;
-        function initAudio() { 
-            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); 
-            if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-        }
-        function audioClick() {
-            initAudio(); if (!audioCtx) return;
-            let osc = audioCtx.createOscillator(); let gain = audioCtx.createGain();
-            osc.connect(gain); gain.connect(audioCtx.destination);
-            osc.frequency.setValueAtTime(500, audioCtx.currentTime);
-            gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
-            osc.start(); osc.stop(audioCtx.currentTime + 0.08);
-        }
-        function audioBuild() {
-            initAudio(); if (!audioCtx) return;
-            let osc = audioCtx.createOscillator(); let gain = audioCtx.createGain();
-            osc.connect(gain); gain.connect(audioCtx.destination);
-            osc.frequency.setValueAtTime(250, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(750, audioCtx.currentTime + 0.18);
-            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.18);
-            osc.start(); osc.stop(audioCtx.currentTime + 0.18);
-        }
-        function audioError() {
-            initAudio(); if (!audioCtx) return;
-            let osc = audioCtx.createOscillator(); let gain = audioCtx.createGain();
-            osc.type = 'sawtooth'; osc.connect(gain); gain.connect(audioCtx.destination);
-            osc.frequency.setValueAtTime(110, audioCtx.currentTime);
-            gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
-            osc.start(); osc.stop(audioCtx.currentTime + 0.25);
-        }
-        function audioCrisis() {
-            initAudio(); if (!audioCtx) return;
-            let osc = audioCtx.createOscillator(); let gain = audioCtx.createGain();
-            osc.type = 'triangle'; osc.connect(gain); gain.connect(audioCtx.destination);
-            osc.frequency.setValueAtTime(380, audioCtx.currentTime);
-            osc.frequency.linearRampToValueAtTime(120, audioCtx.currentTime + 0.35);
-            gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
-            osc.start(); osc.stop(audioCtx.currentTime + 0.35);
-        }
-        function audioEndGame(victory) {
-            initAudio(); if (!audioCtx) return;
-            let osc = audioCtx.createOscillator(); let gain = audioCtx.createGain();
-            osc.connect(gain); gain.connect(audioCtx.destination);
-            let now = audioCtx.currentTime;
-            if(victory) {
-                osc.frequency.setValueAtTime(440, now); osc.frequency.setValueAtTime(554, now + 0.1);
-                osc.frequency.setValueAtTime(659, now + 0.2); osc.frequency.setValueAtTime(880, now + 0.3);
-                gain.gain.setValueAtTime(0.1, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
-                osc.start(); osc.stop(now + 0.5);
-            } else {
-                osc.frequency.setValueAtTime(220, now); osc.frequency.linearRampToValueAtTime(70, now + 0.5);
-                gain.gain.setValueAtTime(0.15, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
-                osc.start(); osc.stop(now + 0.5);
-            }
-        }
-
-        // --- SISTEMA LÓGICO ---
-        let leaderClass = "governador"; 
-        let energia = 0, dinheiro = 100, felicidade = 100, rodada = 1;
-        let historicoCrises = { solar: false, eolica: false, hidro: false, biomassa: false, maremotriz: false, global: 0 };
-        let gameEnded = false;
-
-        function changeNav(id) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-        }
-
-        function selectLeader(classType) {
-            leaderClass = classType;
-            document.querySelectorAll('.char-option').forEach(o => o.classList.remove('selected'));
-            if(classType === 'empresario') document.getElementById('o-emp').classList.add('selected');
-            else if(classType === 'natureza') document.getElementById('o-nat').classList.add('selected');
-            else if(classType === 'governador') document.getElementById('o-gov').classList.add('selected');
-            else if(classType === 'engenheiro') document.getElementById('o-eng').classList.add('selected');
-            else if(classType === 'populista') document.getElementById('o-pop').classList.add('selected');
-            else if(classType === 'investidor') document.getElementById('o-inv').classList.add('selected');
-        }
-
-        function startMandate() {
-            energia = 0; rodada = 1; gameEnded = false;
-            historicoCrises.global = 0;
-            document.getElementById('visual-map').innerHTML = "";
-            document.getElementById('feed-log-box').innerHTML = "<div>[SISTEMA] Matriz iniciada. Arrecadação tributária ativada.</div>";
-            document.getElementById('ui-game-error').style.display = "none";
-            
-            for (let k in historicoCrises) if(k !== 'global') historicoCrises[k] = false;
-
-            if(leaderClass === 'empresario') { dinheiro = 130; felicidade = 80; document.getElementById('hud-leader').innerText = "🛠️ Tecnocrata"; }
-            else if(leaderClass === 'natureza') { dinheiro = 75; felicidade = 120; document.getElementById('hud-leader').innerText = "🌿 Eco-Ativista"; }
-            else if(leaderClass === 'governador') { dinheiro = 100; felicidade = 100; document.getElementById('hud-leader').innerText = "⚖️ Gov. Padrão"; }
-            else if(leaderClass === 'engenheiro') { dinheiro = 90; felicidade = 100; energia = 20; document.getElementById('hud-leader').innerText = "🏗️ O Engenheiro"; }
-            else if(leaderClass === 'populista') { dinheiro = 70; felicidade = 135; document.getElementById('hud-leader').innerText = "📣 O Populista"; }
-            else if(leaderClass === 'investidor') { dinheiro = 160; felicidade = 65; document.getElementById('hud-leader').innerText = "🤑 O Investidor"; }
-
-            renderGameStats(false);
-            changeNav('screen-game');
-        }
-
-        function coletarImpostos() {
-            let ganho = 15;
-            let statusText = "padrão";
-            if (felicidade >= 70) { ganho = 25; statusText = "alto (povo feliz)"; }
-            else if (felicidade < 30) { ganho = 5; statusText = "crítico (protestos/sonegação)"; }
-            
-            dinheiro += ganho;
-            writeFeed(`[TRIBUTOS] +${ganho} 💰 recolhidos de impostos. Fluxo: ${statusText}.`);
-        }
-
-        function renderGameStats(passarTurno = true) {
-            if(gameEnded) return;
-
-            if (passarTurno) {
-                coletarImpostos();
-                checarCrisesGlobais();
-            }
-
-            let eneClamped = Math.min(energia, 100);
-            let felClamped = Math.max(Math.min(felicidade, 200), 0);
-            let dinClamped = Math.max(dinheiro, 0);
-
-            document.getElementById('v-ene').innerText = eneClamped + "%";
-            document.getElementById('v-din').innerText = dinClamped + " moedas";
-            document.getElementById('v-fel').innerText = felClamped + "%";
-            document.getElementById('hud-round').innerText = "Rodada: " + rodada;
-
-            document.getElementById('f-ene').style.width = eneClamped + "%";
-            document.getElementById('f-din').style.width = Math.min(dinClamped, 180) / 1.8 + "%";
-            
-            let felBar = document.getElementById('f-fel');
-            felBar.style.width = Math.min(felClamped, 130) / 1.3 + "%";
-            
-            if(felicidade <= 25) {
-                felBar.classList.add('critical-pulse');
-            } else {
-                felBar.classList.remove('critical-pulse');
-                felBar.style.backgroundColor = "var(--neon-green)";
-            }
-
-            setTimeout(processRulesEnd, 750);
-        }
-
-        function checarCrisesGlobais() {
-            if(felicidade < 45 && historicoCrises.global === 0 && rodada >= 3) {
-                historicoCrises.global = 1;
-                setTimeout(() => triggerQuest('greve_eletricistas'), 400);
-            }
-            else if(dinheiro < 25 && historicoCrises.global <= 1 && energia > 30) {
-                historicoCrises.global = 2;
-                setTimeout(() => triggerQuest('credito_carbono'), 400);
-            }
-        }
-
-        function writeFeed(msg) {
-            let log = document.getElementById('feed-log-box');
-            log.innerHTML = "<div>" + msg + "</div>" + log.innerHTML;
-        }
-
-        function addMapIcon(emoji) {
-            let m = document.getElementById('visual-map');
-            let item = document.createElement('span');
-            item.className = "map-item";
-            item.innerText = emoji;
-            m.appendChild(item);
-        }
-
-        function buildProject(tipo) {
-            if(gameEnded) return;
-            document.getElementById('ui-game-error').style.display = "none";
-            
-            if(tipo === 'solar') {
-                if(dinheiro < 40) { audioError(); showWarningBar(); return; }
-                audioBuild(); dinheiro -= 40; energia += 20; felicidade -= 5;
-                addMapIcon("☀️"); writeFeed(`[Rod. ${rodada}] ☀️ Painéis Solares montados.`);
-                if(!historicoCrises.solar) { setTimeout(() => triggerQuest('solar'), 300); return; }
-            } else if(tipo === 'eolica') {
-                if(dinheiro < 20) { audioError(); showWarningBar(); return; }
-                audioBuild(); dinheiro -= 20; energia += 25; felicidade -= 15;
-                addMapIcon("💨"); writeFeed(`[Rod. ${rodada}] 💨 Torres eólicas fixadas.`);
-                if(!historicoCrises.eolica) { setTimeout(() => triggerQuest('eolica'), 300); return; }
-            } else if(tipo === 'hidro') {
-                if(dinheiro < 15) { audioError(); showWarningBar(); return; }
-                audioBuild(); dinheiro -= 15; energia += 40; felicidade -= 30;
-                addMapIcon("💧"); writeFeed(`[Rod. ${rodada}] 💧 Represa Hidrelétrica erguida.`);
-                if(!historicoCrises.hidro) { setTimeout(() => triggerQuest('hidro'), 300); return; }
-            } else if(tipo === 'biomassa') {
-                if(dinheiro < 25) { audioError(); showWarningBar(); return; }
-                audioBuild(); dinheiro -= 25; energia += 30; felicidade -= 10;
-                addMapIcon("🪵"); writeFeed(`[Rod. ${rodada}] 🪵 Fornos de Biomassa ligados.`);
-                if(!historicoCrises.biomassa) { setTimeout(() => triggerQuest('biomassa'), 300); return; }
-            } else if(tipo === 'maremotriz') {
-                if(dinheiro < 35) { audioError(); showWarningBar(); return; }
-                audioBuild(); dinheiro -= 35; energia += 35; felicidade -= 5;
-                addMapIcon("🌊"); writeFeed(`[Rod. ${rodada}] 🌊 Captadores Maremotriz ancorados.`);
-                if(!historicoCrises.maremotriz) { setTimeout(() => triggerQuest('maremotriz'), 300); return; }
-            }
-            rodada++;
-            renderGameStats(true);
-        }
-
-        function showWarningBar() {
-            let alertUI = document.getElementById('ui-game-error');
-            alertUI.style.display = "block";
-            setTimeout(() => { alertUI.style.display = "none"; }, 2000);
-        }
-
-        function triggerQuest(tipo) {
-            audioCrisis();
-            let overlay = document.getElementById('crisis-popup');
-            let pTitle = document.getElementById('pop-title');
-            let pDesc = document.getElementById('pop-desc');
-            let opts = document.getElementById('pop-options');
-            opts.innerHTML = "";
-
-            if(tipo === 'solar') {
-                historicoCrises.solar = true;
-                pTitle.innerText = "🔋 Vazamento de Silício";
-                pDesc.innerText = "Metais pesados das baterias solares antigas vazaram no lençol freático. A população exige saneamento de urgência. Como agir?";
-                injectChoice("Contratar descontaminação (-20 💰, +15% ❤️)", () => { dinheiro -= 20; felicidade += 15; writeFeed("🛡️ Filtros de contenção de Silício ativados."); exitQuest(); });
-                injectChoice("Abafar o caso na mídia (0 💰, -25% ❤️)", () => { felicidade -= 25; writeFeed("❌ Água contaminada adoeceu bairros periféricos."); exitQuest(); });
-            }
-            else if(tipo === 'eolica') {
-                historicoCrises.eolica = true;
-                pTitle.innerText = "🦜 Colisão Aviária";
-                pDesc.innerText = "As hélices estão triturando bandos de aves migratórias raras. Protestos ecológicos tomaram as ruas frontais da prefeitura.";
-                injectChoice("Instalar radares aviários (-15 💰, +20% ❤️)", () => { dinheiro -= 15; felicidade += 20; writeFeed("🛡️ Tecnologia de repulsão sonora ativa."); exitQuest(); });
-                injectChoice("Manter rota das turbinas (0 💰, -25% ❤️)", () => { felicidade -= 25; writeFeed("❌ Organizações ambientais multaram a gestão."); exitQuest(); });
-            } 
-            else if(tipo === 'hidro') {
-                historicoCrises.hidro = true;
-                pTitle.innerText = "🏠 Inundação de Reservas";
-                pDesc.innerText = "A barragem vai inundar completamente terras habitadas por ribeirinhos tradicionais. Eles exigem compensação e indenizações.";
-                injectChoice("Financiar vilas planejadas (-25 💰, +35% ❤️)", () => { dinheiro -= 25; felicidade += 35; writeFeed("🏡 Famílias reassentadas com dignidade."); exitQuest(); });
-                injectChoice("Desapropriar por decreto (0 💰, -45% ❤️)", () => { felicidade -= 45; writeFeed("❌ Choque de forças gerou tumulto nacional."); exitQuest(); });
-            }
-            else if(tipo === 'biomassa') {
-                historicoCrises.biomassa = true;
-                pTitle.innerText = "😷 Fuligem Tóxica";
-                pDesc.innerText = "A queima constante de matéria orgânica gerou uma névoa densa. Casos de asma infantil dobraram nos hospitais locais.";
-                injectChoice("Instalar filtros catalisadores (-15 💰, +20% ❤️)", () => { dinheiro -= 15; felicidade += 20; writeFeed("🛡️ Chaminés devidamente filtradas."); exitQuest(); });
-                injectChoice("Declarar que é vapor natural (0 💰, -25% ❤️)", () => { felicidade -= 20; writeFeed("❌ População adoece com fuligem ácida."); exitQuest(); });
-            }
-            else if(tipo === 'maremotriz') {
-                historicoCrises.maremotriz = true;
-                pTitle.innerText = "🎣 Cooperativas Falidas";
-                pDesc.innerText = "O ruído magnético das turbinas marítimas espantou os cardumes. Pescadores locais decretaram bloqueio naval em resposta.";
-                injectChoice("Comprar barcos industriais (-20 💰, +25% ❤️)", () => { dinheiro -= 20; felicidade += 25; writeFeed("🏡 Pescadores movidos para o alto-mar."); exitQuest(); });
-                injectChoice("Usar a guarda para liberação (0 💰, -30% ❤️)", () => { felicidade -= 30; writeFeed("❌ Cooperativas perderam todo o ganho vital."); exitQuest(); });
-            }
-            else if(tipo === 'greve_eletricistas') {
-                pTitle.innerText = "⚡ Greve Geral na Rede";
-                pDesc.innerText = "Trabalhadores da energia cruzaram os braços alegando exaustão física e ética devido ao ritmo agressivo de obras. A cidade corre risco de apagão.";
-                injectChoice("Conceder bônus salarial (-25 💰, +25% ❤️)", () => { dinheiro -= 25; felicidade += 25; writeFeed("🛡️ Sindicato aceitou os termos contratuais."); exitQuest(); });
-                injectChoice("Cortar salários e punir (0 💰, -20% Ene, -15% ❤️)", () => { energia -= 20; felicidade -= 15; writeFeed("❌ Boicote interno derrubou transformadores centrais."); exitQuest(); });
-            }
-            else if(tipo === 'credito_carbono') {
-                pTitle.innerText = "🌱 Créditos de Carbono";
-                pDesc.innerText = "Uma auditoria internacional elogiou a velocidade das suas usinas e ofereceu fundos em troca da venda de títulos verdes certificados.";
-                injectChoice("Vender créditos (+45 💰, -10% ❤️)", () => { dinheiro += 45; felicidade -= 10; writeFeed("💰 Moedas injetadas via fundos estrangeiros."); exitQuest(); });
-                injectChoice("Guardar selo para a cidade (0 💰, +20% ❤️)", () => { felicidade += 20; writeFeed("🛡️ Orgulho ecológico inflou o suporte popular."); exitQuest(); });
-            }
-            overlay.style.display = "flex";
-        }
-
-        function injectChoice(text, callback) {
-            let btn = document.createElement('button');
-            btn.className = "btn";
-            btn.style.fontSize = "13px";
-            btn.style.padding = "10px";
-            btn.innerText = text;
-            btn.onclick = () => { audioClick(); callback(); };
-            document.getElementById('pop-options').appendChild(btn);
-        }
-
-        function exitQuest() {
-            document.getElementById('crisis-popup').style.display = "none";
-            renderGameStats(false);
-        }
-
-        function processRulesEnd() {
-            if(gameEnded) return;
-
-            let labelTitle = document.getElementById('go-title-lbl');
-            let labelBody = document.getElementById('go-text-lbl');
-            let labelBadge = document.getElementById('ui-badge');
-            let finalTrigger = false;
-
-            document.getElementById('end-v-ene').innerText = Math.min(energia, 100) + "%";
-            document.getElementById('end-v-din').innerText = Math.max(dinheiro, 0);
-            document.getElementById('end-v-fel').innerText = Math.max(Math.min(felicidade, 100), 0) + "%";
-            document.getElementById('end-v-rod').innerText = rodada;
-
-            if(energia >= 100 && felicidade >= 55) {
-                audioEndGame(true);
-                labelTitle.innerText = "🏆 Vitória Sustentável!";
-                labelTitle.style.color = "var(--neon-green)";
-                labelBadge.innerText = "🏅 Título: Guardião Supremo de Ecotopia";
-                labelBadge.style.background = "rgba(74, 222, 128, 0.15)";
-                labelBadge.style.color = "var(--neon-green)";
-                labelBody.innerText = `Sensacional! Com raciocínio estratégico avançado, você bateu a meta de 100% de energia limpa e manteve as contas estáveis e o povo plenamente amparado com ${felicidade}% de ética.`;
-                finalTrigger = true;
-            }
-            else if(energia >= 100 && felicidade > 0 && felicidade < 55) {
-                audioEndGame(true);
-                labelTitle.innerText = "⚠️ Vitória Opressora";
-                labelTitle.style.color = "var(--neon-amber)";
-                labelBadge.innerText = "⚙️ Título: Tecnocrata Industrial";
-                labelBadge.style.background = "rgba(251, 191, 36, 0.15)";
-                labelBadge.style.color = "var(--neon-amber)";
-                labelBody.innerText = `A malha atingiu 100% de energia e a cidade está totalmente acesa, mas sua aprovação popular despencou para ${felicidade}%. Os robôs funcionam, mas as pessoas vivem infelizes sob escolhas severas.`;
-                finalTrigger = true;
-            }
-            else if(felicidade <= 0) {
-                audioEndGame(false);
-                labelTitle.innerText = "❌ Impeachment ético";
-                labelTitle.style.color = "var(--neon-red)";
-                labelBadge.innerText = "🚨 Título: Vilão Corporativo";
-                labelBadge.style.background = "rgba(248, 113, 113, 0.15)";
-                labelBadge.style.color = "var(--neon-red)";
-                labelBody.innerText = "Seu mandato foi revogado. Ao ignorar as crises humanas das usinas e empurrar ordens judiciais agressivas, a opinião pública derreteu e cassou seus direitos políticos por completo.";
-                finalTrigger = true;
-            } 
-            else if(dinheiro < 15 && energia < 100) {
-                audioEndGame(false);
-                labelTitle.innerText = "💸 Falência Pública";
-                labelTitle.style.color = "var(--neon-red)";
-                labelBadge.innerText = "📉 Título: Prefeito Incompetente";
-                labelBadge.style.background = "rgba(248, 113, 113, 0.15)";
-                labelBadge.style.color = "var(--neon-red)";
-                labelBody.innerText = `Falta de planejamento fiscal estruturado. Suas moedas zeraram (${dinheiro} moedas) e a usina mais acessível custa 15. Sem verba para rodar o mercado de engenharia, a prefeitura faliu e o projeto foi cancelado.`;
-                finalTrigger = true;
-            }
-
-            if(finalTrigger) {
-                gameEnded = true;
-                changeNav('screen-gameover');
-            }
-        }
-    </script>
+    <script src="js/audio.js"></script>
+    <script src="js/game.js"></script>
 </body>
 </html>
+
