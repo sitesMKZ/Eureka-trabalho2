@@ -1,4 +1,4 @@
-// js/events.js - O Cérebro da Imprevisibilidade
+// js/events.js - Gerenciador de UI Aleatória
 
 function rolarFeedCidadãos() {
     let mensagem = "";
@@ -17,7 +17,6 @@ function rolarFeedCidadãos() {
     writeFeed(mensagem);
 }
 
-// Cria uma janela modal dinâmica para não repetirmos código de HTML
 function montarPopup(titulo, descricao, opcoesArr) {
     let overlay = document.getElementById('crisis-popup');
     document.getElementById('pop-title').innerText = titulo;
@@ -29,14 +28,13 @@ function montarPopup(titulo, descricao, opcoesArr) {
     opcoesArr.forEach(opt => {
         let btn = document.createElement('button');
         btn.className = "btn";
-        btn.style.padding = "12px";
-        btn.style.fontSize = "13px";
+        btn.style.padding = "12px"; btn.style.fontSize = "13px";
         btn.innerText = opt.txt;
         btn.onclick = () => {
             audioClick();
             opt.acao();
             overlay.style.display = "none";
-            renderGameStats(false); // Atualiza UI após a escolha
+            renderGameStats(false);
         };
         optsDiv.appendChild(btn);
     });
@@ -46,13 +44,12 @@ function montarPopup(titulo, descricao, opcoesArr) {
 }
 
 function rolarEventosAleatorios() {
-    // Apenas 1 evento grande por vez para não travar o jogador
     for(let i = 0; i < catastrofes.length; i++) {
         let evento = catastrofes[i];
         if (state.rodada >= evento.minRodada && Math.random() < evento.chance) {
             writeFeed(`[URGENTE] Plantão da Cidade ativado.`);
             montarPopup(evento.titulo, evento.desc, evento.opts);
-            return; // Impede que dois eventos popem juntos
+            return; 
         }
     }
 }
