@@ -1,4 +1,3 @@
-// audio.js - Motor Sintetizado Ecotopia
 let audioCtx = null;
 
 function initAudio() { 
@@ -63,4 +62,3 @@ function audioEndGame(victory) {
     }
     osc.start(); osc.stop(now + 0.5);
 }
-
