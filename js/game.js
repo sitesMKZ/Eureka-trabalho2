@@ -1,21 +1,41 @@
-// js/game.js - Estado Centralizado e Loop do Jogo
+// js/game.js - Estado Central, Boot Animation e Lógica de P&D (Zero Lag)
 
 const state = {
-    player: { name: "", avatar: "👨‍💼" },
+    player: { name: "", avatar: "👨‍💼", title: "Gestor" },
     leaderClass: "governador",
     energia: 0, dinheiro: 100, felicidade: 100,
     rodada: 1, climaAtual: null, gameEnded: false,
+    techLevel: 1, // NOVO: Nível de Pesquisa
     crisesFixas: { solar: false, eolica: false, hidro: false, biomassa: false, maremotriz: false }
 };
 
-const custos = { solar: 40, eolica: 20, hidro: 15, biomassa: 25, maremotriz: 35 };
+const custos = { eolica: 20, biomassa: 25, hidro: 15, solar: 40, maremotriz: 35 };
 
+// --- BOOT E LOGIN ---
 window.onload = () => {
-    const savedProfile = localStorage.getItem('ecotopia_profile');
-    if (savedProfile) {
-        state.player = JSON.parse(savedProfile);
-        changeNav('screen-menu');
-    } else { changeNav('screen-login'); }
+    let bootText = "INICIANDO TERMINAL ECOTOPIA...\nCARREGANDO BANCO DE DADOS...\nACESSO CONCEDIDO.";
+    let el = document.getElementById('boot-text');
+    let idx = 0;
+    
+    function typeWriter() {
+        if (idx < bootText.length) {
+            el.innerHTML += bootText.charAt(idx) === '\n' ? '<br/>' : bootText.charAt(idx);
+            idx++;
+            setTimeout(typeWriter, 40);
+        } else {
+            setTimeout(() => {
+                const savedProfile = localStorage.getItem('ecotopia_profile');
+                if (savedProfile) {
+                    state.player = JSON.parse(savedProfile);
+                    if(!state.player.title) state.player.title = "Gestor"; // fallback
+                    changeNav('screen-menu');
+                } else { 
+                    changeNav('screen-login'); 
+                }
+            }, 800);
+        }
+    }
+    typeWriter();
 };
 
 function selectAvatar(element, icon) {
@@ -58,27 +78,47 @@ function selectLeader(classType) {
     document.getElementById(`o-${classType.substring(0,3)}`).classList.add('selected');
 }
 
+// --- SISTEMA DE TROFÉUS E TÍTULOS ---
 function openTrophies() {
     document.getElementById('display-name').innerText = state.player.name;
     document.getElementById('display-avatar').innerText = state.player.avatar;
+    document.getElementById('display-title').innerText = titlesDB[state.player.title] ? titlesDB[state.player.title].text : "[Gestor]";
+    
     const trophies = JSON.parse(localStorage.getItem('ecotopia_trophies')) || { utopia: false, ironHand: false, survivor: false };
     const list = document.getElementById('trophy-list');
     
+    // Atualiza Select de Títulos
+    const select = document.getElementById('title-selector');
+    select.innerHTML = `<option value="default">[Gestor] (Padrão)</option>`;
+    if(trophies.utopia) select.innerHTML += `<option value="utopia">🕊️ O Guardião</option>`;
+    if(trophies.ironHand) select.innerHTML += `<option value="ironHand">🦾 O Tirano</option>`;
+    if(trophies.survivor) select.innerHTML += `<option value="survivor">🪙 Sobrevivente</option>`;
+    
+    // Seta a opção atual
+    select.value = state.player.title;
+
     list.innerHTML = `
         <div class="trophy-card ${trophies.utopia ? 'unlocked' : ''}">
-            <div class="trophy-icon">🕊️</div><div class="trophy-info"><h4>Utopia Pura</h4><p>Vença com 100% ⚡ mantendo a Felicidade > 90%.</p></div>
+            <div class="trophy-icon">🕊️</div><div class="trophy-info"><h4>Utopia Pura</h4><p>Desbloqueia Título: O Guardião</p></div>
         </div>
         <div class="trophy-card ${trophies.ironHand ? 'unlocked' : ''}">
-            <div class="trophy-icon">🦾</div><div class="trophy-info"><h4>Mão de Ferro</h4><p>Vença com 1% a 10% de Felicidade.</p></div>
+            <div class="trophy-icon">🦾</div><div class="trophy-info"><h4>Mão de Ferro</h4><p>Desbloqueia Título: O Tirano</p></div>
         </div>
         <div class="trophy-card ${trophies.survivor ? 'unlocked' : ''}">
-            <div class="trophy-icon">🪙</div><div class="trophy-info"><h4>Gestor Milagreiro</h4><p>Vença terminando com 0 💰 no caixa.</p></div>
+            <div class="trophy-icon">🪙</div><div class="trophy-info"><h4>Gestor Milagreiro</h4><p>Desbloqueia Título: Sobrevivente</p></div>
         </div>`;
     changeNav('screen-trophies');
 }
 
+function equipTitle(titleId) {
+    state.player.title = titleId;
+    localStorage.setItem('ecotopia_profile', JSON.stringify(state.player));
+    document.getElementById('display-title').innerText = titlesDB[titleId].text;
+}
+
+// --- GAMEPLAY E TECH TREE ---
 function startMandate() {
-    state.energia = 0; state.rodada = 1; state.gameEnded = false;
+    state.energia = 0; state.rodada = 1; state.techLevel = 1; state.gameEnded = false;
     state.crisesFixas = { solar: false, eolica: false, hidro: false, biomassa: false, maremotriz: false };
     
     document.getElementById('visual-map').innerHTML = "";
@@ -93,17 +133,54 @@ function startMandate() {
     let p = perfis[state.leaderClass];
     state.dinheiro = p.d; state.felicidade = p.f; state.energia = p.e || 0;
     
-    document.getElementById('hud-leader').innerText = `${state.player.avatar} ${state.player.name}`;
+    let titleStr = titlesDB[state.player.title] ? titlesDB[state.player.title].text : "[Gestor]";
+    document.getElementById('hud-leader').innerText = `${state.player.avatar} ${titleStr}`;
     writeFeed("[SISTEMA] Matriz iniciada. Arrecadação ativada.");
     
+    applyTechLevel();
     updateShopUI();
     renderGameStats(false);
     changeNav('screen-game');
 }
 
+function researchTech() {
+    if(state.dinheiro < 50) { audioError(); showWarning("Verba insuficiente para Pesquisa!"); return; }
+    audioBuild();
+    state.dinheiro -= 50;
+    state.techLevel++;
+    applyTechLevel();
+    writeFeed(`🔬 Avanço Tecnológico! Nível de Pesquisa subiu para ${state.techLevel}. Novas usinas liberadas.`);
+    renderGameStats(false); // não passa o turno
+}
+
+function applyTechLevel() {
+    let lbl = document.getElementById('lbl-tech');
+    let btn = document.getElementById('btn-research');
+    let cardS = document.getElementById('card-solar');
+    let cardH = document.getElementById('card-hidro');
+    let cardM = document.getElementById('card-maremotriz');
+
+    if (state.techLevel === 1) {
+        lbl.innerText = "Nível 1"; btn.innerText = "Avançar (-50 💰)"; btn.disabled = false;
+        cardS.classList.add('locked'); cardH.classList.add('locked'); cardM.classList.add('locked');
+    } else if (state.techLevel === 2) {
+        lbl.innerText = "Nível 2"; btn.innerText = "Máximo"; btn.disabled = true;
+        cardS.classList.remove('locked'); cardH.classList.remove('locked'); cardM.classList.remove('locked');
+        document.getElementById('btn-solar').disabled = false;
+        document.getElementById('btn-hidro').disabled = false;
+        document.getElementById('btn-maremotriz').disabled = false;
+    }
+}
+
 function writeFeed(msg) {
     const log = document.getElementById('feed-log-box');
     log.insertAdjacentHTML('afterbegin', `<div class="feed-msg">${msg}</div>`);
+}
+
+function showWarning(msg) {
+    let bar = document.getElementById('ui-game-error');
+    bar.innerText = msg; bar.style.display = "block";
+    setTimeout(() => bar.style.display = "none", 2000);
 }
 
 function triggerDamageFlash() {
@@ -116,8 +193,11 @@ function triggerDamageFlash() {
 function updateShopUI() {
     Object.keys(custos).forEach(tipo => {
         const btn = document.getElementById(`btn-${tipo}`);
-        if(btn) btn.disabled = state.dinheiro < custos[tipo];
+        if(btn && !document.getElementById(`card-${tipo}`)?.classList.contains('locked')) {
+            btn.disabled = state.dinheiro < custos[tipo];
+        }
     });
+    if(state.techLevel === 1) document.getElementById('btn-research').disabled = state.dinheiro < 50;
 }
 
 function coletarImpostos() {
@@ -136,13 +216,7 @@ function mudarClimaTurno() {
 
 function renderGameStats(passarTurno = true) {
     if(state.gameEnded) return;
-
-    if (passarTurno) {
-        coletarImpostos();
-        mudarClimaTurno();
-        rolarFeedCidadãos(); // Vem do events.js
-        rolarEventosAleatorios(); // Vem do events.js
-    }
+    if (passarTurno) { coletarImpostos(); mudarClimaTurno(); rolarFeedCidadãos(); rolarEventosAleatorios(); }
 
     let eneC = Math.min(state.energia, 100);
     let felC = Math.max(Math.min(state.felicidade, 200), 0);
@@ -155,17 +229,11 @@ function renderGameStats(passarTurno = true) {
 
     document.getElementById('f-ene').style.width = eneC + "%";
     document.getElementById('f-din').style.width = Math.min(dinC, 180) / 1.8 + "%";
-    
     let felBar = document.getElementById('f-fel');
     felBar.style.width = Math.min(felC, 130) / 1.3 + "%";
     
-    if(felC <= 25) {
-        felBar.classList.add('critical-pulse');
-        felBar.classList.remove('fill-green');
-    } else {
-        felBar.classList.remove('critical-pulse');
-        felBar.classList.add('fill-green');
-    }
+    if(felC <= 25) { felBar.classList.add('critical-pulse'); felBar.classList.remove('fill-green'); } 
+    else { felBar.classList.remove('critical-pulse'); felBar.classList.add('fill-green'); }
 
     updateShopUI();
     setTimeout(processRulesEnd, 750);
@@ -175,12 +243,7 @@ function buildProject(tipo) {
     if(state.gameEnded) return;
     let custo = custos[tipo];
 
-    if(state.dinheiro < custo) { 
-        audioError(); 
-        document.getElementById('ui-game-error').style.display = "block";
-        setTimeout(() => document.getElementById('ui-game-error').style.display = "none", 2000);
-        return; 
-    }
+    if(state.dinheiro < custo) { audioError(); showWarning("Caixa insuficiente para obra!"); return; }
 
     audioBuild();
     state.dinheiro -= custo;
@@ -189,7 +252,6 @@ function buildProject(tipo) {
     let danos = { solar: 5, eolica: 15, hidro: 30, biomassa: 10, maremotriz: 5 };
     let icones = { solar: "☀️", eolica: "💨", hidro: "💧", biomassa: "🪵", maremotriz: "🌊" };
 
-    // Aplica o Modificador do Clima Atual
     let modificadorClima = state.climaAtual.mod[tipo] || 0;
     let energiaReal = Math.max(baseEne[tipo] + modificadorClima, 0);
 
@@ -203,44 +265,40 @@ function buildProject(tipo) {
 
     state.rodada++;
     
-    // Dispara a Quest Fixa da Usina na 1ª vez
-    if(!state.crisesFixas[tipo]) {
-        setTimeout(() => triggerQuestFixa(tipo), 300);
-    } else {
-        renderGameStats(true);
-    }
+    if(!state.crisesFixas[tipo]) { setTimeout(() => triggerQuestFixa(tipo), 300); } 
+    else { renderGameStats(true); }
 }
 
 function triggerQuestFixa(tipo) {
     if (tipo === 'solar') {
         state.crisesFixas.solar = true;
         montarPopup("🔋 Vazamento de Silício", "Metais vazaram na água. Como agir?", [
-            { txt: "Descontaminar (-20 💰, +15% ❤️)", acao: () => { state.dinheiro -= 20; state.felicidade += 15; } },
-            { txt: "Abafar caso (0 💰, -25% ❤️)", acao: () => { state.felicidade -= 25; triggerDamageFlash(); } }
+            { txt: "Descontaminar (-20 💰)", acao: () => { state.dinheiro -= 20; } },
+            { txt: "Abafar caso (-25% ❤️)", acao: () => { state.felicidade -= 25; triggerDamageFlash(); } }
         ]);
     } else if (tipo === 'eolica') {
         state.crisesFixas.eolica = true;
         montarPopup("🦜 Colisão Aviária", "As hélices afetam aves. Protestos ocorrendo.", [
-            { txt: "Instalar radares (-15 💰, +20% ❤️)", acao: () => { state.dinheiro -= 15; state.felicidade += 20; } },
-            { txt: "Ignorar (0 💰, -25% ❤️)", acao: () => { state.felicidade -= 25; triggerDamageFlash(); } }
+            { txt: "Instalar radares (-15 💰)", acao: () => { state.dinheiro -= 15; } },
+            { txt: "Ignorar (-25% ❤️)", acao: () => { state.felicidade -= 25; triggerDamageFlash(); } }
         ]);
     } else if (tipo === 'hidro') {
         state.crisesFixas.hidro = true;
         montarPopup("🏠 Inundação Social", "Terras ribeirinhas alagadas.", [
-            { txt: "Financiar vilas (-25 💰, +35% ❤️)", acao: () => { state.dinheiro -= 25; state.felicidade += 35; } },
-            { txt: "Desapropriar (0 💰, -45% ❤️)", acao: () => { state.felicidade -= 45; triggerDamageFlash(); } }
+            { txt: "Financiar vilas (-25 💰)", acao: () => { state.dinheiro -= 25; } },
+            { txt: "Desapropriar (-45% ❤️)", acao: () => { state.felicidade -= 45; triggerDamageFlash(); } }
         ]);
     } else if (tipo === 'biomassa') {
         state.crisesFixas.biomassa = true;
         montarPopup("😷 Fuligem Tóxica", "Névoa densa causou asma na cidade.", [
-            { txt: "Filtros (-15 💰, +20% ❤️)", acao: () => { state.dinheiro -= 15; state.felicidade += 20; } },
-            { txt: "Mentir (0 💰, -25% ❤️)", acao: () => { state.felicidade -= 25; triggerDamageFlash(); } }
+            { txt: "Filtros (-15 💰)", acao: () => { state.dinheiro -= 15; } },
+            { txt: "Mentir (-25% ❤️)", acao: () => { state.felicidade -= 25; triggerDamageFlash(); } }
         ]);
     } else if (tipo === 'maremotriz') {
         state.crisesFixas.maremotriz = true;
         montarPopup("🎣 Cooperativas", "Pescadores boicotando os geradores.", [
-            { txt: "Subsidiar frota (-20 💰, +25% ❤️)", acao: () => { state.dinheiro -= 20; state.felicidade += 25; } },
-            { txt: "Polícia Naval (0 💰, -30% ❤️)", acao: () => { state.felicidade -= 30; triggerDamageFlash(); } }
+            { txt: "Subsidiar frota (-20 💰)", acao: () => { state.dinheiro -= 20; } },
+            { txt: "Força Naval (-30% ❤️)", acao: () => { state.felicidade -= 30; triggerDamageFlash(); } }
         ]);
     }
 }
@@ -264,7 +322,7 @@ function processRulesEnd() {
     }
     else if(state.energia >= 100 && state.felicidade > 0 && state.felicidade < 55) {
         audioEndGame(true); title.innerText = "⚠️ Distopia de Neon"; title.style.color = "var(--neon-amber)";
-        body.innerText = "100% de energia, mas a cidade é uma distopia industrial. As pessoas vivem presas às máquinas.";
+        body.innerText = "100% de energia, mas a cidade é uma distopia industrial. As pessoas vivem infelizes.";
         finalTrigger = true;
     }
     else if(state.felicidade <= 0) {
@@ -287,9 +345,10 @@ function processRulesEnd() {
 
         if(ganhouAlgo) {
             localStorage.setItem('ecotopia_trophies', JSON.stringify(trophies));
-            body.innerText += "\n\n⭐ NOVO TROFÉU DESBLOQUEADO! Verifique a Galeria.";
+            body.innerText += "\n\n⭐ NOVO TROFÉU DESBLOQUEADO! Vá ao Gabinete para equipar um novo título.";
         }
     }
 
     if(finalTrigger) { state.gameEnded = true; changeNav('screen-gameover'); }
 }
+
