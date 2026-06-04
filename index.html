@@ -9,6 +9,7 @@
 <body>
     <div class="container">
         
+        <!-- TELA DE LOGIN / CRIAR PERFIL -->
         <div id="screen-login" class="screen">
             <div class="card-box">
                 <div class="eureka-badge">ACESSO RESTRITO</div>
@@ -31,6 +32,7 @@
             </div>
         </div>
 
+        <!-- SALA DE TROFÉUS -->
         <div id="screen-trophies" class="screen">
             <div class="card-box">
                 <h2>🏆 Galeria de Honra</h2>
@@ -43,13 +45,15 @@
                 </div>
 
                 <div class="trophy-grid" id="trophy-list">
-                    </div>
+                    <!-- Preenchido via JS -->
+                </div>
 
                 <button class="btn btn-back" onclick="audioClick(); changeNav('screen-menu')">Voltar ao Gabinete</button>
                 <button class="btn" style="background: rgba(248, 113, 113, 0.1); color: var(--neon-red); padding: 12px; font-size: 12px;" onclick="audioError(); resetProfile()">Deletar Perfil ⚠️</button>
             </div>
         </div>
 
+        <!-- MENU PRINCIPAL -->
         <div id="screen-menu" class="screen">
             <div class="card-box">
                 <div class="eureka-badge">PROJETO EUREKA</div>
@@ -67,6 +71,7 @@
             </div>
         </div>
 
+        <!-- REGRAS -->
         <div id="screen-help" class="screen">
             <div class="card-box">
                 <h2>❓ Como Funciona?</h2>
@@ -81,6 +86,7 @@
             </div>
         </div>
 
+        <!-- SELEÇÃO DE CLASSE -->
         <div id="screen-player" class="screen">
             <div class="card-box">
                 <h2>👤 Selecione seu Líder</h2>
@@ -124,6 +130,7 @@
             </div>
         </div>
 
+        <!-- PRINCIPAL DE JOGO -->
         <div id="screen-game" class="screen">
             <div class="card-box" id="game-main-box">
                 <div class="game-hud">
@@ -202,6 +209,7 @@
             </div>
         </div>
 
+        <!-- TELA GAME OVER -->
         <div id="screen-gameover" class="screen">
             <div class="card-box">
                 <h2 id="go-title-lbl" class="go-title">Mandato Encerrado</h2>
@@ -222,6 +230,7 @@
         <footer>Projeto Eureka &copy; 2026 | Desenvolvido por: <strong>Kauã, Pedro, Micael</strong></footer>
     </div>
 
+    <!-- OVERLAY DAS CRISES -->
     <div class="overlay" id="crisis-popup">
         <div class="modal">
             <h3 id="pop-title">Quest de Impacto!</h3>
@@ -230,7 +239,11 @@
         </div>
     </div>
 
+    <!-- SCRIPTS ORGANIZADOS -->
     <script src="js/audio.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/events.js"></script>
     <script src="js/game.js"></script>
 </body>
 </html>
+
