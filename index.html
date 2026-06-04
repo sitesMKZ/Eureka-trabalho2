@@ -6,10 +6,15 @@
     <title>Ecotopia Ultimate - Edição Expandida</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="bg-animated">
     <div class="container">
         
-        <!-- TELA DE LOGIN / CRIAR PERFIL -->
+        <div id="screen-boot" class="screen active" style="height: 100%; display: flex; align-items: center; justify-content: center;">
+            <div class="terminal-box">
+                <p id="boot-text" class="typewriter"></p>
+            </div>
+        </div>
+
         <div id="screen-login" class="screen">
             <div class="card-box">
                 <div class="eureka-badge">ACESSO RESTRITO</div>
@@ -18,7 +23,7 @@
                 
                 <input type="text" id="input-player-name" class="game-input" placeholder="Ex: Kauã" maxlength="12" autocomplete="off">
                 
-                <h3 style="font-size: 14px; margin: 16px 0 10px; color: var(--text-muted); text-transform: uppercase;">Escolha seu Avatar:</h3>
+                <h3 class="section-title">Escolha seu Avatar:</h3>
                 <div class="avatar-grid" id="avatar-selection">
                     <div class="avatar-option selected" onclick="audioClick(); selectAvatar(this, '👨‍💼')">👨‍💼</div>
                     <div class="avatar-option" onclick="audioClick(); selectAvatar(this, '👩‍🔬')">👩‍🔬</div>
@@ -32,28 +37,32 @@
             </div>
         </div>
 
-        <!-- SALA DE TROFÉUS -->
         <div id="screen-trophies" class="screen">
             <div class="card-box">
-                <h2>🏆 Galeria de Honra</h2>
-                <div id="profile-display" class="group-tag" style="display: flex; align-items: center; justify-content: center; gap: 12px;">
-                    <span id="display-avatar" style="font-size: 32px;">👨‍💼</span>
+                <h2>🏆 Gabinete do Prefeito</h2>
+                
+                <div id="profile-display" class="group-tag" style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 10px;">
+                    <span id="display-avatar" style="font-size: 38px;">👨‍💼</span>
                     <div style="text-align: left;">
-                        <p>Gestor Oficial</p>
-                        <span id="display-name" style="color: #fff; font-size: 18px; font-weight: 800;">Nome</span>
+                        <span id="display-title" style="color: var(--neon-purple); font-size: 11px; font-weight: 800; text-transform: uppercase;">[Gestor]</span>
+                        <p id="display-name" style="color: #fff; font-size: 20px; font-weight: 800; margin-top: -2px;">Nome</p>
                     </div>
                 </div>
 
+                <h3 class="section-title">Título Ativo:</h3>
+                <select id="title-selector" class="game-input" style="margin-bottom: 20px; font-size:14px; padding:10px; background: rgba(0,0,0,0.6);" onchange="audioClick(); equipTitle(this.value)">
+                    <option value="[Gestor]">[Gestor] (Padrão)</option>
+                </select>
+
+                <h3 class="section-title">Galeria de Conquistas:</h3>
                 <div class="trophy-grid" id="trophy-list">
-                    <!-- Preenchido via JS -->
-                </div>
+                    </div>
 
                 <button class="btn btn-back" onclick="audioClick(); changeNav('screen-menu')">Voltar ao Gabinete</button>
                 <button class="btn" style="background: rgba(248, 113, 113, 0.1); color: var(--neon-red); padding: 12px; font-size: 12px;" onclick="audioError(); resetProfile()">Deletar Perfil ⚠️</button>
             </div>
         </div>
 
-        <!-- MENU PRINCIPAL -->
         <div id="screen-menu" class="screen">
             <div class="card-box">
                 <div class="eureka-badge">PROJETO EUREKA</div>
@@ -67,26 +76,28 @@
 
                 <button class="btn btn-green" onclick="audioClick(); changeNav('screen-player')">Jogar Partida 🚀</button>
                 <button class="btn" onclick="audioClick(); changeNav('screen-help')">Ver Regras do Jogo ❓</button>
-                <button class="btn" style="background-color: var(--panel-bg); border: 1px solid var(--neon-purple); color: var(--neon-purple);" onclick="audioClick(); openTrophies()">Sala de Troféus 🏆</button>
+                <button class="btn" style="background-color: var(--panel-bg); border: 1px solid var(--neon-purple); color: var(--neon-purple);" onclick="audioClick(); openTrophies()">Perfil e Troféus 🏆</button>
+            </div>
+            
+            <div class="ticker-wrap">
+                <div class="ticker" id="menu-ticker">🌍 Conectando à malha global... | ⚠️ Prefeito de Ecotopia-7 acabou de sofrer impeachment. | ⚡ Investimentos em energia limpa sobem 12%.</div>
             </div>
         </div>
 
-        <!-- REGRAS -->
         <div id="screen-help" class="screen">
             <div class="card-box">
-                <h2>❓ Como Funciona?</h2>
+                <h2>❓ Diretrizes da Cidade</h2>
                 <ul class="rules-grid">
                     <li>🎯 <strong>Objetivo:</strong> Construa usinas para bater a meta de <strong>100% de Energia</strong>.</li>
                     <li>💰 <strong>Impostos:</strong> População feliz paga mais (+25 💰), população revoltada sonega (+5 💰).</li>
                     <li>❤️ <strong>Ética:</strong> Usinas baratas causam crises. Felicidade zerada (<strong>0%</strong>) gera Impeachment!</li>
-                    <li>🌤️ <strong>Clima:</strong> O clima muda e afeta a eficiência das suas usinas. Diversifique!</li>
-                    <li>💸 <strong>Falência:</strong> Se o dinheiro zerar e você não puder construir, o governo quebra.</li>
+                    <li>🔬 <strong>Tecnologia:</strong> Usinas limpas começam bloqueadas. Invista em Pesquisa (P&D) para liberá-las.</li>
+                    <li>💸 <strong>Falência:</strong> Se o dinheiro zerar e você não puder construir nem pesquisar, o governo quebra.</li>
                 </ul>
                 <button class="btn btn-back" onclick="audioClick(); changeNav('screen-menu')">Voltar ao Menu</button>
             </div>
         </div>
 
-        <!-- SELEÇÃO DE CLASSE -->
         <div id="screen-player" class="screen">
             <div class="card-box">
                 <h2>👤 Selecione seu Líder</h2>
@@ -130,11 +141,10 @@
             </div>
         </div>
 
-        <!-- PRINCIPAL DE JOGO -->
         <div id="screen-game" class="screen">
             <div class="card-box" id="game-main-box">
                 <div class="game-hud">
-                    <span id="hud-leader" style="color:var(--neon-green);">Líder: ⚖️ Governador</span>
+                    <span id="hud-leader" style="color:var(--neon-green);">Líder: ⚖️ Gov</span>
                     <span id="hud-weather" style="color:var(--neon-amber);">🌤️ Céu Limpo</span>
                     <span id="hud-round" style="color: var(--neon-purple);">Rodada: 1</span>
                 </div>
@@ -161,17 +171,19 @@
 
                 <div class="alert-bar" id="ui-game-error">Ação inválida ou verba insuficiente!</div>
 
+                <div class="research-panel" id="ui-research">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div style="text-align: left;">
+                            <span style="font-size:12px; font-weight:800; color:var(--neon-purple); text-transform: uppercase;">Nível de P&D: <span id="lbl-tech">Nível 1</span></span>
+                            <p style="font-size:10px; color:#cbd5e1; margin-top:2px;">Desbloqueia usinas limpas.</p>
+                        </div>
+                        <button class="btn btn-mini" id="btn-research" style="background:var(--neon-purple); color:#fff; width:auto; padding:8px 12px; margin:0;" onclick="researchTech()">Avançar (-50 💰)</button>
+                    </div>
+                </div>
+
                 <h3 class="shop-title">Mercado de Engenharia:</h3>
                 
                 <div class="shop-grid">
-                    <div class="usina-card">
-                        <div class="usina-top">
-                            <span>☀️ Painéis Solares</span>
-                            <div class="tag-group"><span class="tag tag-cost">40 💰</span><span class="tag tag-ene">+20% ⚡</span><span class="tag tag-pop">-5% ❤️</span></div>
-                        </div>
-                        <button class="btn btn-green btn-mini" id="btn-solar" onclick="buildProject('solar')">Construir Solar</button>
-                    </div>
-
                     <div class="usina-card">
                         <div class="usina-top">
                             <span>💨 Complexo Eólico</span>
@@ -182,26 +194,34 @@
 
                     <div class="usina-card">
                         <div class="usina-top">
-                            <span>💧 Usina Hidrelétrica</span>
-                            <div class="tag-group"><span class="tag tag-cost">15 💰</span><span class="tag tag-ene">+40% ⚡</span><span class="tag tag-pop">-30% ❤️</span></div>
-                        </div>
-                        <button class="btn btn-green btn-mini" id="btn-hidro" onclick="buildProject('hidro')">Erguer Barragem</button>
-                    </div>
-
-                    <div class="usina-card">
-                        <div class="usina-top">
                             <span>🪵 Central de Biomassa</span>
                             <div class="tag-group"><span class="tag tag-cost">25 💰</span><span class="tag tag-ene">+30% ⚡</span><span class="tag tag-pop">-10% ❤️</span></div>
                         </div>
                         <button class="btn btn-green btn-mini" id="btn-biomassa" onclick="buildProject('biomassa')">Ativar Biomassa</button>
                     </div>
 
-                    <div class="usina-card">
+                    <div class="usina-card locked" id="card-hidro">
                         <div class="usina-top">
-                            <span>🌊 Captadores Maremotriz</span>
+                            <span>💧 Usina Hidrelétrica <span class="lock-icon">🔒</span></span>
+                            <div class="tag-group"><span class="tag tag-cost">15 💰</span><span class="tag tag-ene">+40% ⚡</span><span class="tag tag-pop">-30% ❤️</span></div>
+                        </div>
+                        <button class="btn btn-green btn-mini" id="btn-hidro" onclick="buildProject('hidro')" disabled>Erguer Barragem</button>
+                    </div>
+
+                    <div class="usina-card locked" id="card-solar">
+                        <div class="usina-top">
+                            <span>☀️ Painéis Solares <span class="lock-icon">🔒</span></span>
+                            <div class="tag-group"><span class="tag tag-cost">40 💰</span><span class="tag tag-ene">+20% ⚡</span><span class="tag tag-pop">-5% ❤️</span></div>
+                        </div>
+                        <button class="btn btn-green btn-mini" id="btn-solar" onclick="buildProject('solar')" disabled>Construir Solar</button>
+                    </div>
+
+                    <div class="usina-card locked" id="card-maremotriz">
+                        <div class="usina-top">
+                            <span>🌊 Captadores Maremotriz <span class="lock-icon">🔒</span></span>
                             <div class="tag-group"><span class="tag tag-cost">35 💰</span><span class="tag tag-ene">+35% ⚡</span><span class="tag tag-pop">-5% ❤️</span></div>
                         </div>
-                        <button class="btn btn-green btn-mini" id="btn-maremotriz" onclick="buildProject('maremotriz')">Instalar Ondas</button>
+                        <button class="btn btn-green btn-mini" id="btn-maremotriz" onclick="buildProject('maremotriz')" disabled>Instalar Ondas</button>
                     </div>
                 </div>
 
@@ -209,7 +229,6 @@
             </div>
         </div>
 
-        <!-- TELA GAME OVER -->
         <div id="screen-gameover" class="screen">
             <div class="card-box">
                 <h2 id="go-title-lbl" class="go-title">Mandato Encerrado</h2>
@@ -230,7 +249,6 @@
         <footer>Projeto Eureka &copy; 2026 | Desenvolvido por: <strong>Kauã, Pedro, Micael</strong></footer>
     </div>
 
-    <!-- OVERLAY DAS CRISES -->
     <div class="overlay" id="crisis-popup">
         <div class="modal">
             <h3 id="pop-title">Quest de Impacto!</h3>
@@ -239,7 +257,6 @@
         </div>
     </div>
 
-    <!-- SCRIPTS ORGANIZADOS -->
     <script src="js/audio.js"></script>
     <script src="js/data.js"></script>
     <script src="js/events.js"></script>
