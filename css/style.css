@@ -41,7 +41,6 @@ h2 { font-size: 24px; font-weight: 800; margin-bottom: 12px; letter-spacing: -0.
 .group-tag p { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px; }
 .group-tag span { font-size: 15px; font-weight: 700; color: var(--neon-amber); }
 
-/* Botões melhorados com estado Disabled */
 .btn { display: block; width: 100%; padding: 16px; font-size: 15px; font-weight: 800; color: #070a13; background-color: var(--neon-blue); border: none; border-radius: 14px; cursor: pointer; transition: all 0.2s ease; text-align: center; box-shadow: 0 4px 14px var(--shadow-blue); margin-bottom: 12px; text-transform: uppercase; }
 @media (hover: hover) { .btn:not(:disabled):hover { transform: translateY(-2px); filter: brightness(1.1); } }
 .btn:not(:disabled):active { transform: translateY(1px) scale(0.98); }
@@ -72,7 +71,6 @@ h2 { font-size: 24px; font-weight: 800; margin-bottom: 12px; letter-spacing: -0.
 .fill-blue { background-color: var(--neon-blue); box-shadow: 0 0 8px var(--neon-blue); }
 .fill-amber { background-color: var(--neon-amber); box-shadow: 0 0 8px var(--neon-amber); }
 .fill-green { background-color: var(--neon-green); box-shadow: 0 0 8px var(--neon-green); }
-
 .critical-pulse { animation: pulseCritical 0.5s infinite alternate; }
 @keyframes pulseCritical { from { background-color: #ef4444; box-shadow: 0 0 8px #ef4444; } to { background-color: #991b1b; box-shadow: 0 0 2px #991b1b; } }
 
@@ -107,6 +105,20 @@ h2 { font-size: 24px; font-weight: 800; margin-bottom: 12px; letter-spacing: -0.
 .rules-grid { text-align: left; margin: 16px 0; list-style: none; }
 .rules-grid li { margin-bottom: 10px; font-size: 13px; background: rgba(0,0,0,0.2); padding: 10px 14px; border-radius: 10px; border-left: 3px solid var(--neon-blue); }
 .go-title { font-size: 30px; font-weight: 900; text-transform: uppercase; }
-.go-text { margin-top:10px; margin-bottom:24px; line-height:1.6; font-size:14px; color:#cbd5e1; text-align: justify; }
+.go-text { margin-top:10px; margin-bottom:24px; line-height:1.6; font-size:14px; color:#cbd5e1; text-align: justify; white-space: pre-wrap; }
 footer { text-align: center; font-size: 11px; color: var(--text-muted); padding: 16px 0; border-top: 1px solid rgba(255,255,255,0.03); margin-top: auto; }
 
+/* --- NOVOS ESTILOS DE PERFIL E TROFÉUS --- */
+.game-input { width: 100%; background: rgba(0, 0, 0, 0.4); border: 2px solid rgba(255, 255, 255, 0.1); color: #fff; font-size: 18px; font-weight: 700; padding: 16px; border-radius: 12px; text-align: center; outline: none; transition: all 0.2s ease; }
+.game-input:focus { border-color: var(--neon-blue); box-shadow: 0 0 15px rgba(56, 189, 248, 0.2); }
+.game-input::placeholder { color: #475569; font-weight: 500; }
+.avatar-grid { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+.avatar-option { font-size: 32px; background: rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.05); border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; user-select: none; }
+.avatar-option:hover { transform: scale(1.1); border-color: rgba(255,255,255,0.2); }
+.avatar-option.selected { border-color: var(--neon-green); background: rgba(74, 222, 128, 0.1); box-shadow: 0 0 15px rgba(74, 222, 128, 0.3); transform: scale(1.1); }
+.trophy-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 20px; max-height: 300px; overflow-y: auto; padding-right: 5px; }
+.trophy-card { background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.05); padding: 14px; border-radius: 12px; display: flex; align-items: center; gap: 14px; text-align: left; filter: grayscale(100%); opacity: 0.5; transition: all 0.3s ease; }
+.trophy-card.unlocked { filter: auto; opacity: 1; border-color: var(--neon-amber); background: rgba(251, 191, 36, 0.05); }
+.trophy-icon { font-size: 28px; }
+.trophy-info h4 { font-size: 14px; color: #fff; margin-bottom: 2px; }
+.trophy-info p { font-size: 11px; color: var(--text-muted); }
